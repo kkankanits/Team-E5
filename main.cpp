@@ -9,8 +9,7 @@ FEHMotor leftTire(FEHMotor::Motor0, 9);
 FEHMotor rightTire(FEHMotor::Motor1, 9);
     Movement()
     {
-        leftTire.setPercent(50);
-        rightTire.setPercent(50);
+        
     }
     //given a distance we will calculate whats needed to make the robot move that much
     void moveDistance(float distance)
@@ -21,6 +20,15 @@ FEHMotor rightTire(FEHMotor::Motor1, 9);
     {
 
     }
+    void setLeftPercent(float value)
+    {
+        leftTire.setPercent(value);
+    }
+    void setRightPercent(float value)
+    {
+        rightTire.setPercent(value);
+    }
+
 };
 int main(void)
 {
