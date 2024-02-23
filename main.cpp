@@ -30,6 +30,38 @@ void setLeftSpeed(int speed)
 }
 };
 
+void checkpoint1() {
+    //wait for the start light
+
+    //move the robot _ seconds
+
+    //turn left halfway?
+
+    //drive forward _ seconds
+
+    //turn right 90 degree
+
+    //drive forward _ seconds (up the ramp)
+
+    //turn right slightly
+
+    //drive forward _second
+
+    //turn left slightly
+
+    //drive forward _ seconds (until hit the ticket kiosk)
+
+    //turn left backward
+    
+    //turn right forward
+
+    //drive forward (down the ramp)
+
+    //stop
+
+    
+}
+
 
 int main(void)
 {
