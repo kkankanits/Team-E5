@@ -27,6 +27,9 @@ class Tire{ //checkpoint 1
     int getSpeed() {
         return speed;
     }
+    void setSpeed(int s) {
+        speed = s;
+    }
 
 };
 
