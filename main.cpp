@@ -13,9 +13,9 @@ class Tire{ //checkpoint 1
         speed = 0;
     } 
     void resetSpeed(){
-        speed = 12;
+        speed = 0;
     }
-    
+
     void setHalfSpeed()
     {
         speed = 25;
@@ -24,7 +24,7 @@ class Tire{ //checkpoint 1
     {
         speed = 50;
     }
-        int getSpeed() {
+    int getSpeed() {
         return speed;
     }
 
