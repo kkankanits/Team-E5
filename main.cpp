@@ -14,11 +14,11 @@ Movement(int rightSpeed, int leftSpeed)
 //given a distance we will calculate whats needed to make the robot move that much
 void moveDistance(float distance)
 {
-    //PID tutorial
+//PID tutorial
 }
 void toBoardingAndBack() //for checkpoint 1
 {
-
+    
 }
 void setRightSpeed(int speed)
 {
@@ -36,6 +36,6 @@ int main(void)
     LCD.Clear(BLACK);
     LCD.WriteLine("Hello, World!");
     LCD.WriteLine("Hello, World!");
-    
+
     return 0;
 }
