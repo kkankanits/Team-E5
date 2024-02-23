@@ -107,7 +107,7 @@ void checkpoint1() {
 int main(void)
 {
     LCD.Clear(BLACK);
-    LCD.WriteLine("Hello, JJ!");
+    LCD.WriteLine(cds.Value());
 
     return 0;
 }
