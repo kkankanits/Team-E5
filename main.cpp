@@ -2,9 +2,16 @@
 #include <FEHServo.h>
 #include <FEHLCD.h>
 #include <FEHMotor.h>
+
+#define WHEEL_Radius 2.5
+#define TRANSLATIONS_PER_REV 318
+#define PI 3.14
+
 FEHMotor leftTire(FEHMotor::Motor0, 9);
 FEHMotor rightTire(FEHMotor::Motor1, 9);
 AnalogInputPin cds(FEHIO::P0_0);
+DigitalEncoder rightShaft(FEHIO:P0_1);
+DigitalEncoder leftShaft(FEHIO:P0_2);
 
 class Movement{
 Movement(int rightSpeed, int leftSpeed)
@@ -99,8 +106,20 @@ void checkpoint1() {
     driveForward(5.0);
     //stop
     stop();
+}
 
-    
+//shaft encoding methods
+//given a distance we will calculate whats needed to make the robot move that much
+void moveDistance(float distance)
+{
+    float multiple = distance/(WHEEL_Radius*2*PI);
+    leftShaft.resetCounts();
+    rightShaft.resetCounts();
+    leftTire.SetPercent(50);
+    rightTire.SetPercent(50);
+    while((rightShaft.Counts() <= TRANSLATIONS_PER_REV * multiple) && (leftShaft.Counts() <= TRANSLATIONS_PER_REV * multiple)){}
+    leftTire.SetPercent(0);
+    rightTire.SetPercent(0);
 }
 
 
