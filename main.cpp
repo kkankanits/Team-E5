@@ -2,10 +2,14 @@
 #include <FEHServo.h>
 #include <FEHLCD.h>
 #include <FEHMotor.h>
+<<<<<<< HEAD
 
 #define WHEEL_Radius 2.5
 #define TRANSLATIONS_PER_REV 318
 #define PI 3.14
+=======
+#include <FEHIO.h>
+>>>>>>> b7d903b72bf5ef13db85319fa30316bd11a51293
 
 FEHMotor leftTire(FEHMotor::Motor0, 9);
 FEHMotor rightTire(FEHMotor::Motor1, 9);
@@ -29,17 +33,17 @@ void toBoardingAndBack() //for checkpoint 1
 }
 void setRightSpeed(int speed)
 {
-    rightTire.setPercent(speed);
+    rightTire.SetPercent(speed);
 }
 void setLeftSpeed(int speed)
 {
-    leftTire.setPercent(speed);
+    leftTire.SetPercent(speed);
 }
 };
 
 void waitForStartLight() {
     //detect any light (will have to change to red)
-    while(cds.value() >= 3.0) {
+    while(cds.Value() >= 3.0) {
 
     }
 }
@@ -81,29 +85,29 @@ void checkpoint1() {
     //wait for the start light
     waitForStartLight();
     //move the robot _ seconds
-    driveForward(3.0);
+    driveForward(1.0);
     //turn left halfway?
-    turnleft(2.0);
+    turnLeft(.125);
     //drive forward _ seconds
-    driveForward(2.0);
+    driveForward(1.0);
     //turn right 90 degree
-    turnRight(4.0);
+    turnRight(.25);
     //drive forward _ seconds (up the ramp)
-    driveForward(6.0);
+    driveForward(3.0);
     //turn right slightly
-    turnRight(2.0);
+    turnRight(.125);
     //drive forward _second
-    driveForward(2.0);
+    driveForward(1.0);
     //turn left slightly
-    turnLeft(2.0);
+    turnLeft(.125);
     //drive forward _ seconds (until hit the ticket kiosk)
-    driveForward(4.0);
+    driveForward(1.0);
     //turn left backward
-    turnLeftBackward(4.0);
+    turnLeftBackward(.25);
     //turn right forward
-    turnRight(4.0);
+    turnRight(.25);
     //drive forward (down the ramp)
-    driveForward(5.0);
+    driveForward(2.0);
     //stop
     stop();
 }
@@ -126,7 +130,7 @@ void moveDistance(float distance)
 int main(void)
 {
     LCD.Clear(BLACK);
-    LCD.WriteLine(cds.Value());
+    checkpoint1();
 
     return 0;
 }
