@@ -2,14 +2,10 @@
 #include <FEHServo.h>
 #include <FEHLCD.h>
 #include <FEHMotor.h>
-<<<<<<< HEAD
 
 #define WHEEL_Radius 2.5
 #define TRANSLATIONS_PER_REV 318
 #define PI 3.14
-=======
-#include <FEHIO.h>
->>>>>>> b7d903b72bf5ef13db85319fa30316bd11a51293
 
 FEHMotor leftTire(FEHMotor::Motor0, 9);
 FEHMotor rightTire(FEHMotor::Motor1, 9);
