@@ -76,7 +76,7 @@ void checkpoint1() {
     //move the robot _ seconds
     driveForward(3.0);
     //turn left halfway?
-    turnleft(2.0);
+    turnLeft(2.0);
     //drive forward _ seconds
     driveForward(2.0);
     //turn right 90 degree
@@ -107,7 +107,6 @@ void checkpoint1() {
 int main(void)
 {
     LCD.Clear(BLACK);
-    LCD.WriteLine(cds.Value());
     checkpoint1();
 
     return 0;
