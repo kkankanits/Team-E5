@@ -78,25 +78,25 @@ void checkpoint1() {
     //move the robot _ seconds
     driveForward(1.0);
     //turn left halfway?
-    turnLeft(1.0);
+    turnLeft(.125);
     //drive forward _ seconds
     driveForward(1.0);
     //turn right 90 degree
-    turnRight(1.0);
+    turnRight(.25);
     //drive forward _ seconds (up the ramp)
     driveForward(3.0);
     //turn right slightly
-    turnRight(.5);
+    turnRight(.125);
     //drive forward _second
     driveForward(1.0);
     //turn left slightly
-    turnLeft(.5);
+    turnLeft(.125);
     //drive forward _ seconds (until hit the ticket kiosk)
     driveForward(1.0);
     //turn left backward
-    turnLeftBackward(1.0);
+    turnLeftBackward(.25);
     //turn right forward
-    turnRight(1.0);
+    turnRight(.25);
     //drive forward (down the ramp)
     driveForward(2.0);
     //stop
