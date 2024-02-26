@@ -108,6 +108,7 @@ int main(void)
 {
     LCD.Clear(BLACK);
     LCD.WriteLine(cds.Value());
+    checkpoint1();
 
     return 0;
 }
