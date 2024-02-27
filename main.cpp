@@ -114,14 +114,34 @@ void checkpoint1() {
 void moveDistance(float distance)
 {
     float numRevolutions = distance/(WHEEL_Radius*2*PI); 
-    leftShaft.resetCounts();
-    rightShaft.resetCounts();
+    leftShaft.ResetCounts();
+    rightShaft.ResetCounts();
     
-    while((rightShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions) && (leftShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions)){
-        leftTire.SetPercent(50);
-        rightTire.SetPercent(50);
-    }
+    //the if statements are there to reduce errors. 2 ways shown. use whichever works. 
 
+    //way 1
+    while((rightShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions) && (leftShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions)){
+        if(rightShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions)
+            leftTire.SetPercent(50);
+        if(leftShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions)
+            rightTire.SetPercent(50);
+    }
+    
+
+    /* way 2 THIS ShOULD ALSO WORK
+    for(int i = 0; i < numRevolutions; i++)
+    {
+        while((rightShaft.Counts() <= TRANSLATIONS_PER_REV) && (leftShaft.Counts() <= TRANSLATIONS_PER_REV)){
+        if(rightShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions)
+            leftTire.SetPercent(50);
+        if(leftShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions)
+            rightTire.SetPercent(50);
+        }
+    rightShaft.ResetCounts();
+    leftShaft.ResetCounts();
+    }
+    */
+    
     //might need these to stop for tasks
     //leftTire.SetPercent(0);
     //rightTire.SetPercent(0);
