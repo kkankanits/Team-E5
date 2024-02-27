@@ -10,6 +10,7 @@
 FEHMotor leftTire(FEHMotor::Motor0, 9);
 FEHMotor rightTire(FEHMotor::Motor1, 9);
 AnalogInputPin cds(FEHIO::P0_0);
+//shaft variables
 DigitalEncoder rightShaft(FEHIO:P0_1);
 DigitalEncoder leftShaft(FEHIO:P0_2);
 
@@ -112,14 +113,18 @@ void checkpoint1() {
 //given a distance we will calculate whats needed to make the robot move that much
 void moveDistance(float distance)
 {
-    float multiple = distance/(WHEEL_Radius*2*PI);
+    float numRevolutions = distance/(WHEEL_Radius*2*PI); 
     leftShaft.resetCounts();
     rightShaft.resetCounts();
-    leftTire.SetPercent(50);
-    rightTire.SetPercent(50);
-    while((rightShaft.Counts() <= TRANSLATIONS_PER_REV * multiple) && (leftShaft.Counts() <= TRANSLATIONS_PER_REV * multiple)){}
-    leftTire.SetPercent(0);
-    rightTire.SetPercent(0);
+    
+    while((rightShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions) && (leftShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions)){
+        leftTire.SetPercent(50);
+        rightTire.SetPercent(50);
+    }
+
+    //might need these to stop for tasks
+    //leftTire.SetPercent(0);
+    //rightTire.SetPercent(0);
 }
 
 
