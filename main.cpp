@@ -143,6 +143,7 @@ void moveForwardDistance(float distance)
 
     //way 1
     while((rightShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions) && (leftShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions)){
+        /*
         if(rightShaft.Counts() == TRANSLATIONS_PER_REV * numRevolutions) {
             //stop the right wheel if its reached the distance
             rightTire.SetPercent(0);
@@ -151,6 +152,7 @@ void moveForwardDistance(float distance)
             //stop the left wheel if its reached the distance
             leftTire.SetPercent(0);
         }
+        */
     }
 
     //might need these to stop for tasks
