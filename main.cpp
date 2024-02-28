@@ -13,11 +13,10 @@
 
 FEHMotor leftTire(FEHMotor::Motor1, 9);
 FEHMotor rightTire(FEHMotor::Motor3, 9);
-//AnalogInputPin cds(FEHIO::P0_0);
+AnalogInputPin cds(FEHIO::P3_7);
 //shaft variables
 DigitalEncoder rightShaft(FEHIO::P0_0);
 DigitalEncoder leftShaft(FEHIO::P0_1);
-
 
 class Movement{
 Movement(int rightSpeed, int leftSpeed)
@@ -106,7 +105,7 @@ void checkpoint1() {
     //turn right 90 degree
     turnRight(.25);
     //drive forward _ seconds (up the ramp)
-    driveForward(3.1);
+    driveForward(3.0);
     //turn right slightly
     turnRight(.125);
     //drive forward _second
@@ -144,7 +143,6 @@ void moveForwardDistance(float distance)
 
     //way 1
     while((rightShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions) && (leftShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions)){
-        
         if(rightShaft.Counts() == TRANSLATIONS_PER_REV * numRevolutions) {
             //stop the right wheel if its reached the distance
             rightTire.SetPercent(0);
@@ -153,7 +151,6 @@ void moveForwardDistance(float distance)
             //stop the left wheel if its reached the distance
             leftTire.SetPercent(0);
         }
-        
     }
 
     //might need these to stop for tasks
@@ -193,7 +190,6 @@ void moveBackwardDistance(float distance)
     rightTire.SetPercent(-50);
     
     while((rightShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions) && (leftShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions)){
-        
         if(rightShaft.Counts() == TRANSLATIONS_PER_REV * numRevolutions) {
             //stop the right wheel if its reached the distance
             rightTire.SetPercent(0);
@@ -202,7 +198,6 @@ void moveBackwardDistance(float distance)
             //stop the left wheel if its reached the distance
             leftTire.SetPercent(0);
         }
-        
     }
 
     //might need these to stop for tasks
@@ -211,11 +206,6 @@ void moveBackwardDistance(float distance)
     
 }
 
-//void turnRight(float degrees)
-//{
-    
-//}
-
 /* This function programmed the robot for checkpoint 1 using distance */
 void checkpoint1A() {
     //wait for the start light
@@ -223,36 +213,33 @@ void checkpoint1A() {
 
     //move the robot out the starting position
     moveForwardDistance(20);
-
     //turn left (halfway) to drive toward the ramp
     turnLeft(.30);
-
     //move forward to reach the ramp
-    moveForwardDistance(19);
+    moveForwardDistance(23);
     //turn right (90 degrees) to face the ramp
-    turnRight(1.35);
+    turnRight(.65);
     //drive forward up the ramp 
     moveForwardDistance(40);
     //turn right (90 degree) to face the passport stamp
-    turnRight(1.5);
+    turnRight(.65);
     //move forward towards the passport stamp
-    moveForwardDistance(16);
-
+    moveForwardDistance(13);
     //turn left (90 degree) to face the ticket kiosk
-    turnLeft(1.2);
+    turnLeft(.655);
     //drive towards the ticket kiosk
-    moveForwardDistance(30);
+    moveForwardDistance(35.2);
     //drive backward towards the luggage
     moveBackwardDistance(25);
-
     //turn right backward to face the wall of the robot course
-    turnRightBackward(1.5);
+    turnRightBackward(.7);
+    moveForwardDistance(5);
     //drive backward towards the passport stamp to make space for turning
-    moveBackwardDistance(5);
+    //moveBackwardDistance(5.0);
     //turn left (90 degree) to face the ramp
-    turnLeft(1);
+    turnLeft(.75);
     //drive down the ramp
-    moveForwardDistance(25);
+    moveForwardDistance(40);
 
     //stop
     stop();
@@ -269,9 +256,6 @@ int main(void)
     // }
 
     LCD.Clear(BLACK);
-    //while (true) {
-        //LCD.Write(cds.Value());
-    //}
     checkpoint1A();
 
     return 0;
