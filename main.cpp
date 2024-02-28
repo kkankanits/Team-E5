@@ -18,6 +18,7 @@ FEHMotor rightTire(FEHMotor::Motor3, 9);
 DigitalEncoder rightShaft(FEHIO::P0_0);
 DigitalEncoder leftShaft(FEHIO::P0_1);
 
+
 class Movement{
 Movement(int rightSpeed, int leftSpeed)
 {
@@ -143,7 +144,7 @@ void moveForwardDistance(float distance)
 
     //way 1
     while((rightShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions) && (leftShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions)){
-        /*
+        
         if(rightShaft.Counts() == TRANSLATIONS_PER_REV * numRevolutions) {
             //stop the right wheel if its reached the distance
             rightTire.SetPercent(0);
@@ -152,7 +153,7 @@ void moveForwardDistance(float distance)
             //stop the left wheel if its reached the distance
             leftTire.SetPercent(0);
         }
-        */
+        
     }
 
     //might need these to stop for tasks
@@ -192,6 +193,7 @@ void moveBackwardDistance(float distance)
     rightTire.SetPercent(-50);
     
     while((rightShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions) && (leftShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions)){
+        
         if(rightShaft.Counts() == TRANSLATIONS_PER_REV * numRevolutions) {
             //stop the right wheel if its reached the distance
             rightTire.SetPercent(0);
@@ -200,11 +202,17 @@ void moveBackwardDistance(float distance)
             //stop the left wheel if its reached the distance
             leftTire.SetPercent(0);
         }
+        
     }
 
     //might need these to stop for tasks
     leftTire.SetPercent(0);
     rightTire.SetPercent(0);
+    
+}
+
+void turnRight(float degrees)
+{
     
 }
 
