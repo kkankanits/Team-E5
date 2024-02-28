@@ -2,17 +2,21 @@
 #include <FEHServo.h>
 #include <FEHLCD.h>
 #include <FEHMotor.h>
+#include <FEHIO.h>
+#include <cmath>
+#include <math.h>
 
 #define WHEEL_Radius 2.5
 #define TRANSLATIONS_PER_REV 318
 #define PI 3.14
+#define WHEEL_CCFR WHEEL_Radius*M_PI
 
-FEHMotor leftTire(FEHMotor::Motor0, 9);
-FEHMotor rightTire(FEHMotor::Motor1, 9);
-AnalogInputPin cds(FEHIO::P0_0);
+FEHMotor leftTire(FEHMotor::Motor1, 9);
+FEHMotor rightTire(FEHMotor::Motor3, 9);
+//AnalogInputPin cds(FEHIO::P0_0);
 //shaft variables
-DigitalEncoder rightShaft(FEHIO:P0_1);
-DigitalEncoder leftShaft(FEHIO:P0_2);
+DigitalEncoder rightShaft(FEHIO::P0_0);
+DigitalEncoder leftShaft(FEHIO::P0_1);
 
 class Movement{
 Movement(int rightSpeed, int leftSpeed)
@@ -24,10 +28,6 @@ void moveDistance(float distance)
 {
 //PID tutorial
 }
-void toBoardingAndBack() //for checkpoint 1
-{
-    
-}
 void setRightSpeed(int speed)
 {
     rightTire.SetPercent(speed);
@@ -38,46 +38,61 @@ void setLeftSpeed(int speed)
 }
 };
 
+/* This function waits for the red start light to trigger the robot to start */
 void waitForStartLight() {
     //detect any light (will have to change to red)
-    while(cds.Value() >= 3.0) {
+    // while(cds.Value() >= 3.0) {
 
-    }
+    // }
 }
 
+/* This functions drives the robot forward using time */
 void driveForward(float sec) {
     leftTire.SetPercent(50);
     rightTire.SetPercent(50);
     Sleep(sec);
 }
 
+/* This functions makes the robot turn left using time */
 void turnLeft(float sec) {
+    //left tire speed should be 0 or drive backwards to turn left
+    leftTire.SetPercent(-50);
+    rightTire.SetPercent(50);
+    Sleep(sec);
+}
+
+/* This function makes the robot turn right using time */
+void turnRight(float sec) {
+    //right tire speed should be 0 to turn right
+    leftTire.SetPercent(50);
+    rightTire.SetPercent(-50);
+    Sleep(sec);
+}
+
+/* This function makes the robot turn left backward using time */
+void turnLeftBackward(float sec) {
     //left tire speed should be 0 to turn left
+    leftTire.SetPercent(50);
+    rightTire.SetPercent(-50);
+    Sleep(sec);
+}
+
+/* This function makes the robot turn right backward using time */
+void turnRightBackward(float sec) {
+    //right tire speed should be 0 to turn right
     leftTire.SetPercent(0);
     rightTire.SetPercent(50);
     Sleep(sec);
 }
 
-void turnRight(float sec) {
-    //right tire speed should be 0 to turn right
-    leftTire.SetPercent(50);
-    rightTire.SetPercent(0);
-    Sleep(sec);
-}
-
-void turnLeftBackward(float sec) {
-    //left tire speed should be 0 to turn left
-    leftTire.SetPercent(0);
-    rightTire.SetPercent(-50);
-    Sleep(sec);
-}
-
+/* This function stops the robot from moving */
 void stop() {
     leftTire.SetPercent(0);
     rightTire.SetPercent(0);
     Sleep(1.0);
 }
 
+/* This function programmed the robot for checkpoint one using time-based */
 void checkpoint1() {
     //wait for the start light
     waitForStartLight();
@@ -109,23 +124,38 @@ void checkpoint1() {
     stop();
 }
 
+
 //shaft encoding methods
 //given a distance we will calculate whats needed to make the robot move that much
-void moveDistance(float distance)
+/* This function drives the robot forward a given distance using shaft encoding */
+void moveForwardDistance(float distance)
 {
+    //calculate the number of revolutions using distance
     float numRevolutions = distance/(WHEEL_Radius*2*PI); 
+    //reset counts on the shaft
     leftShaft.ResetCounts();
     rightShaft.ResetCounts();
+    //set speed of the tire
+    leftTire.SetPercent(50);
+    rightTire.SetPercent(50);
     
     //the if statements are there to reduce errors. 2 ways shown. use whichever works. 
 
     //way 1
     while((rightShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions) && (leftShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions)){
-        if(rightShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions)
-            leftTire.SetPercent(50);
-        if(leftShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions)
-            rightTire.SetPercent(50);
+        if(rightShaft.Counts() == TRANSLATIONS_PER_REV * numRevolutions) {
+            //stop the right wheel if its reached the distance
+            rightTire.SetPercent(0);
+        }
+        if(leftShaft.Counts() == TRANSLATIONS_PER_REV * numRevolutions) {
+            //stop the left wheel if its reached the distance
+            leftTire.SetPercent(0);
+        }
     }
+
+    //might need these to stop for tasks
+    leftTire.SetPercent(0);
+    rightTire.SetPercent(0);
     
 
     /* way 2 THIS ShOULD ALSO WORK
@@ -147,11 +177,78 @@ void moveDistance(float distance)
     //rightTire.SetPercent(0);
 }
 
+/* This function drives the robot backward a given distance using shaft encoding */
+void moveBackwardDistance(float distance)
+{
+    //calculate the number of revolutions using distance
+    float numRevolutions = distance/(WHEEL_Radius*2*PI); 
+    //reset counts on the shaft
+    leftShaft.ResetCounts();
+    rightShaft.ResetCounts();
+    //set speed of the tire
+    leftTire.SetPercent(-50);
+    rightTire.SetPercent(-50);
+    
+    while((rightShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions) && (leftShaft.Counts() <= TRANSLATIONS_PER_REV * numRevolutions)){
+        if(rightShaft.Counts() == TRANSLATIONS_PER_REV * numRevolutions) {
+            //stop the right wheel if its reached the distance
+            rightTire.SetPercent(0);
+        }
+        if(leftShaft.Counts() == TRANSLATIONS_PER_REV * numRevolutions) {
+            //stop the left wheel if its reached the distance
+            leftTire.SetPercent(0);
+        }
+    }
+
+    //might need these to stop for tasks
+    leftTire.SetPercent(0);
+    rightTire.SetPercent(0);
+    
+}
+
+/* This function programmed the robot for checkpoint 1 using distance */
+void checkpoint1A() {
+    //wait for the start light
+    //waitForStartLight();
+
+    //move the robot out the starting position
+    moveForwardDistance(20);
+    //turn left (halfway) to drive toward the ramp
+    turnLeft(.30);
+    //move forward to reach the ramp
+    moveForwardDistance(19);
+    //turn right (90 degrees) to face the ramp
+    turnRight(1.35);
+    //drive forward up the ramp 
+    moveForwardDistance(40);
+    //turn right (90 degree) to face the passport stamp
+    turnRight(1.5);
+    //move forward towards the passport stamp
+    moveForwardDistance(13);
+    //turn left (90 degree) to face the ticket kiosk
+    turnLeft(1.2);
+    //drive towards the ticket kiosk
+    moveForwardDistance(30);
+    //drive backward towards the luggage
+    moveBackwardDistance(25);
+    //turn right backward to face the wall of the robot course
+    turnRightBackward(1.5);
+    //drive backward towards the passport stamp to make space for turning
+    moveBackwardDistance(5);
+    //turn left (90 degree) to face the ramp
+    turnLeft(1);
+    //drive down the ramp
+    moveForwardDistance(25);
+
+    //stop
+    stop();
+}
+
 
 int main(void)
 {
     LCD.Clear(BLACK);
-    checkpoint1();
+    checkpoint1A();
 
     return 0;
 }
