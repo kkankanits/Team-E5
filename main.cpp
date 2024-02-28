@@ -231,7 +231,7 @@ void checkpoint1A() {
     moveForwardDistance(19.5);
 
     //turn right (90 degrees) to face the ramp
-    turnRight(1.4);
+    turnRight(1.65);
 
     //drive forward up the ramp 
     moveForwardDistance(40);
