@@ -211,15 +211,15 @@ void moveBackwardDistance(float distance)
     
 }
 
-void turnRight(float degrees)
-{
+//void turnRight(float degrees)
+//{
     
-}
+//}
 
 /* This function programmed the robot for checkpoint 1 using distance */
 void checkpoint1A() {
     //wait for the start light
-    waitForStartLight();
+    //waitForStartLight();
 
     //move the robot out the starting position
     moveForwardDistance(20);
@@ -228,19 +228,19 @@ void checkpoint1A() {
     turnLeft(.30);
 
     //move forward to reach the ramp
-    moveForwardDistance(19.5);
+    moveForwardDistance(19.95);
 
     //turn right (90 degrees) to face the ramp
-    turnRight(1.7);
+    turnRight(0.7);
 
     //drive forward up the ramp 
     moveForwardDistance(40);
 
     //turn right slightly to face the passport stamp
-    turnRight(1.5);
+    turnRight(0.65);
 
     //move forward towards the passport stamp
-    moveForwardDistance(15);
+    moveForwardDistance(16);
 
     //turn left (90 degree) to face the ticket kiosk
     turnLeft(1.2);
@@ -277,6 +277,9 @@ void checkpoint1A() {
 int main(void)
 {
     LCD.Clear(BLACK);
+    //while (true) {
+        //LCD.Write(cds.Value());
+    //}
     checkpoint1A();
 
     return 0;
