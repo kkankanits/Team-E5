@@ -13,7 +13,7 @@
 
 FEHMotor leftTire(FEHMotor::Motor1, 9);
 FEHMotor rightTire(FEHMotor::Motor3, 9);
-//AnalogInputPin cds(FEHIO::P0_0);
+AnalogInputPin cds(FEHIO::P3_7);
 //shaft variables
 DigitalEncoder rightShaft(FEHIO::P0_0);
 DigitalEncoder leftShaft(FEHIO::P0_1);
@@ -41,9 +41,9 @@ void setLeftSpeed(int speed)
 /* This function waits for the red start light to trigger the robot to start */
 void waitForStartLight() {
     //detect any light (will have to change to red)
-    // while(cds.Value() >= 3.0) {
+    while(cds.Value() >= 2.0) {
 
-    // }
+    }
 }
 
 /* This functions drives the robot forward using time */
@@ -80,7 +80,7 @@ void turnLeftBackward(float sec) {
 /* This function makes the robot turn right backward using time */
 void turnRightBackward(float sec) {
     //right tire speed should be 0 to turn right
-    leftTire.SetPercent(0);
+    leftTire.SetPercent(-50);
     rightTire.SetPercent(50);
     Sleep(sec);
 }
@@ -209,36 +209,37 @@ void moveBackwardDistance(float distance)
 /* This function programmed the robot for checkpoint 1 using distance */
 void checkpoint1A() {
     //wait for the start light
-    //waitForStartLight();
+    waitForStartLight();
 
     //move the robot out the starting position
     moveForwardDistance(20);
     //turn left (halfway) to drive toward the ramp
     turnLeft(.30);
     //move forward to reach the ramp
-    moveForwardDistance(19);
+    moveForwardDistance(23);
     //turn right (90 degrees) to face the ramp
-    turnRight(1.35);
+    turnRight(.65);
     //drive forward up the ramp 
     moveForwardDistance(40);
     //turn right (90 degree) to face the passport stamp
-    turnRight(1.5);
+    turnRight(.65);
     //move forward towards the passport stamp
     moveForwardDistance(13);
     //turn left (90 degree) to face the ticket kiosk
-    turnLeft(1.2);
+    turnLeft(.655);
     //drive towards the ticket kiosk
-    moveForwardDistance(30);
+    moveForwardDistance(35.2);
     //drive backward towards the luggage
     moveBackwardDistance(25);
     //turn right backward to face the wall of the robot course
-    turnRightBackward(1.5);
+    turnRightBackward(.7);
+    moveForwardDistance(5);
     //drive backward towards the passport stamp to make space for turning
-    moveBackwardDistance(5);
+    //moveBackwardDistance(5.0);
     //turn left (90 degree) to face the ramp
-    turnLeft(1);
+    turnLeft(.75);
     //drive down the ramp
-    moveForwardDistance(25);
+    moveForwardDistance(40);
 
     //stop
     stop();
@@ -247,6 +248,13 @@ void checkpoint1A() {
 
 int main(void)
 {
+    // while(true) {
+    //     LCD.Write(cds.Value());
+    //     Sleep(1.0);
+    //     LCD.Clear(BLACK);
+        
+    // }
+
     LCD.Clear(BLACK);
     checkpoint1A();
 
