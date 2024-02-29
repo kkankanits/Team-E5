@@ -213,33 +213,48 @@ void checkpoint1A() {
 
     //move the robot out the starting position
     moveForwardDistance(20);
+
     //turn left (halfway) to drive toward the ramp
-    turnLeft(.30);
+    turnLeft(.37);
+
     //move forward to reach the ramp
     moveForwardDistance(23);
+    
     //turn right (90 degrees) to face the ramp
-    turnRight(.65);
+    turnRight(.72);
+
     //drive forward up the ramp 
-    moveForwardDistance(40);
+    moveForwardDistance(45);
+
     //turn right (90 degree) to face the passport stamp
     turnRight(.65);
+
     //move forward towards the passport stamp
-    moveForwardDistance(13);
+    moveForwardDistance(25);
+
     //turn left (90 degree) to face the ticket kiosk
-    turnLeft(.655);
-    //drive towards the ticket kiosk
-    moveForwardDistance(35.2);
+    turnLeft(.5);
+
+    //drive towards the ticket kiosk to touch
+    moveForwardDistance(32);
+
     //drive backward towards the luggage
     moveBackwardDistance(25);
+
     //turn right backward to face the wall of the robot course
-    turnRightBackward(.7);
-    moveForwardDistance(5);
+    turnRightBackward(.65);
+
+    //drive to be in front of top of ramp
+    moveForwardDistance(20);
+    
     //drive backward towards the passport stamp to make space for turning
-    //moveBackwardDistance(5.0);
+    moveBackwardDistance(1.5);
+
     //turn left (90 degree) to face the ramp
-    turnLeft(.75);
+    turnLeft(.8);
+
     //drive down the ramp
-    moveForwardDistance(40);
+    moveForwardDistance(30);
 
     //stop
     stop();
