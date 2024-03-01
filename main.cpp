@@ -212,7 +212,6 @@ void checkpoint1A() {
     //wait for the start light
     waitForStartLight();
     LCD.Write("HI");
-    LCD.Update();
     //move the robot out the starting position
     moveForwardDistance(20);
 
