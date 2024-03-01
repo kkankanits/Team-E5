@@ -224,10 +224,10 @@ void checkpoint1A() {
     turnRight(.72);
 
     //drive forward up the ramp 
-    moveForwardDistance(45);
+    moveForwardDistance(46);
 
     //turn right (90 degree) to face the passport stamp
-    turnRight(.65);
+    turnRight(.6);
 
     //move forward towards the passport stamp
     moveForwardDistance(25);
@@ -236,7 +236,7 @@ void checkpoint1A() {
     turnLeft(.5);
 
     //drive towards the ticket kiosk to touch
-    moveForwardDistance(32);
+    moveForwardDistance(33);
 
     //drive backward towards the luggage
     moveBackwardDistance(25);
@@ -245,16 +245,18 @@ void checkpoint1A() {
     turnRightBackward(.65);
 
     //drive to be in front of top of ramp
-    moveForwardDistance(20);
+    moveForwardDistance(18.5);
     
     //drive backward towards the passport stamp to make space for turning
-    moveBackwardDistance(1.5);
+    //moveBackwardDistance(1.5);
 
     //turn left (90 degree) to face the ramp
-    turnLeft(.8);
+    turnLeft(.705);
+
+    //turnLeftBackward(0.7);
 
     //drive down the ramp
-    moveForwardDistance(30);
+    moveForwardDistance(45);
 
     //stop
     stop();
