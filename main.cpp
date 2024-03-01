@@ -97,6 +97,7 @@ void checkpoint1() {
     //wait for the start light
     waitForStartLight();
     //move the robot _ seconds
+    
     driveForward(1.0);
     //turn left halfway?
     turnLeft(.125);
@@ -210,7 +211,8 @@ void moveBackwardDistance(float distance)
 void checkpoint1A() {
     //wait for the start light
     waitForStartLight();
-
+    LCD.Write("HIIII");
+    LCD.Update();
     //move the robot out the starting position
     moveForwardDistance(20);
 
