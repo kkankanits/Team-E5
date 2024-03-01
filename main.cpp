@@ -211,7 +211,7 @@ void moveBackwardDistance(float distance)
 void checkpoint1A() {
     //wait for the start light
     waitForStartLight();
-    LCD.Write("HI");
+    LCD.Write("HIIII");
     //move the robot out the starting position
     moveForwardDistance(20);
 
@@ -271,6 +271,7 @@ int main(void)
         
     // }
 
+    // test comment
     LCD.Clear(BLACK);
     checkpoint1A();
 
