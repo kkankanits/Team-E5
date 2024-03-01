@@ -97,7 +97,6 @@ void checkpoint1() {
     //wait for the start light
     waitForStartLight();
     //move the robot _ seconds
-    
     driveForward(1.0);
     //turn left halfway?
     turnLeft(.125);
