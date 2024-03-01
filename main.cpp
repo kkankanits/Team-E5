@@ -21,7 +21,7 @@ DigitalEncoder leftShaft(FEHIO::P0_1);
 class Movement{
 Movement(int rightSpeed, int leftSpeed)
 {
-   //default 
+   
 }
 //given a distance we will calculate whats needed to make the robot move that much
 void moveDistance(float distance)
