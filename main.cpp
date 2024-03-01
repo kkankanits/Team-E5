@@ -271,6 +271,7 @@ int main(void)
         
     // }
 
+    // test comment
     LCD.Clear(BLACK);
     checkpoint1A();
 
