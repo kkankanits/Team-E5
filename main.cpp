@@ -6,7 +6,7 @@
 #include <cmath>
 #include <math.h>
 
-#define WHEEL_Radius 2.5
+#define WHEEL_Radius 1.25
 #define TRANSLATIONS_PER_REV 318.0
 #define PI 3.14
 
