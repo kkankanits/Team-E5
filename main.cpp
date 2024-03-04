@@ -10,8 +10,7 @@
 #define TRANSLATIONS_PER_REV 318.0
 #define PI 3.14
 
-FEHMotor leftTire(FEHMotor::Motor1, 9);
-FEHMotor rightTire(FEHMotor::Motor3, 9);
+
 AnalogInputPin cds(FEHIO::P3_7);
 
 
@@ -90,7 +89,7 @@ int distance_to_count(int distance){
     return (distance*318)/(2*M_PI*1.25);
 }
 
-void move_forward(int percent, int counts) //using encoders
+void move_forward(int percent, int counts) //using encoders 
 {
     //Reset encoder counts
     right_encoder.ResetCounts();
@@ -109,7 +108,7 @@ void move_forward(int percent, int counts) //using encoders
     left_motor.Stop();
 }
 
-void turn_right(int percent, int counts) //using encoders
+void turn_right(int percent, int counts) //using encoders 50, 250 for 90 degree
 {
 
     //Reset encoder counts
@@ -132,7 +131,7 @@ void turn_right(int percent, int counts) //using encoders
 
 }
 
-void turn_left(int percent, int counts) //using encoders
+void turn_left(int percent, int counts) //using encoders 50, 250 for 90 degrees
 {
 
     //Reset encoder counts
@@ -157,7 +156,9 @@ void turn_left(int percent, int counts) //using encoders
 
 void checkpoint2()
 {
-     
+     move_forward(25, distance_to_count(19));
+
+     turn_right(50, 200);
 }
 
 int main(void)
@@ -171,6 +172,8 @@ int main(void)
 
     // test comment
     LCD.Clear(BLACK);
+
+    checkpoint2();
 
     return 0;
 
