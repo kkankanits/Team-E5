@@ -7,9 +7,8 @@
 #include <math.h>
 
 #define WHEEL_Radius 2.5
-#define TRANSLATIONS_PER_REV 318
+#define TRANSLATIONS_PER_REV 318.0
 #define PI 3.14
-#define WHEEL_CCFR WHEEL_Radius*M_PI
 
 FEHMotor leftTire(FEHMotor::Motor1, 9);
 FEHMotor rightTire(FEHMotor::Motor3, 9);
@@ -262,6 +261,56 @@ void checkpoint1A() {
     stop();
 }
 
+float distanceFromCounts(float count) {
+    return 2*M_PI*WHEEL_Radius*count/ TRANSLATIONS_PER_REV;
+}
+
+void move_forward(int percent, float distance)
+{
+    //Reset encoder counts
+    rightShaft.ResetCounts();
+    leftShaft.ResetCounts();
+
+    //Set both motors to desired percent
+    rightTire.SetPercent(percent);
+    leftTire.SetPercent(percent);
+
+    //While the average of the left and right encoder is less than distance,
+    //keep running motors
+    while(distanceFromCounts((leftShaft.Counts() + rightShaft.Counts())/2.0) < distance*2.0);
+
+    //Turn off motors
+    rightTire.Stop();
+    leftTire.Stop();
+}
+
+void turn_right(int percent, float distance)
+{
+    //Reset encoder counts
+    rightShaft.ResetCounts();
+    leftShaft.ResetCounts();
+
+    //Set right motor backwards, left motor forward
+    rightTire.SetPercent(-1*percent);
+    leftTire.SetPercent(percent);
+
+    //While the average of the left and right encoder is less than distance,
+    //keep running motors
+    while(distanceFromCounts((leftShaft.Counts() + rightShaft.Counts())/2.0) < distance*2.0);
+
+    //Turn off motors
+    rightTire.Stop();
+    leftTire.Stop();
+}
+
+void turn_right_90Degree()
+{
+    //call turn right for 6 feet
+    turn_right(50, 3.0);
+    turn_right(50, 3.0);
+}
+
+
 
 int main(void)
 {
@@ -274,7 +323,10 @@ int main(void)
 
     // test comment
     LCD.Clear(BLACK);
-    checkpoint1A();
+    turn_right_90Degree();
+
+    
 
     return 0;
+
 }
