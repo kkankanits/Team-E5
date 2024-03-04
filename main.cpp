@@ -6,7 +6,7 @@
 #include <cmath>
 #include <math.h>
 
-#define WHEEL_Radius 2.5
+#define WHEEL_Radius 1.25
 #define TRANSLATIONS_PER_REV 318.0
 #define PI 3.14
 
@@ -277,7 +277,7 @@ void move_forward(int percent, float distance)
 
     //While the average of the left and right encoder is less than distance,
     //keep running motors
-    while(distanceFromCounts((leftShaft.Counts() + rightShaft.Counts())/2.0) < distance*2.0);
+    while(distanceFromCounts((leftShaft.Counts() + rightShaft.Counts())/2.0) < distance);
 
     //Turn off motors
     rightTire.Stop();
@@ -323,7 +323,7 @@ int main(void)
 
     // test comment
     LCD.Clear(BLACK);
-    turn_right_90Degree();
+    move_forward(50, 5.0);
 
     
 
