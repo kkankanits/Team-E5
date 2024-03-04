@@ -13,9 +13,13 @@
 FEHMotor leftTire(FEHMotor::Motor1, 9);
 FEHMotor rightTire(FEHMotor::Motor3, 9);
 AnalogInputPin cds(FEHIO::P3_7);
-//shaft variables
-DigitalEncoder rightShaft(FEHIO::P0_0);
-DigitalEncoder leftShaft(FEHIO::P0_1);
+
+
+//Declarations for encoders & motors
+DigitalEncoder right_encoder(FEHIO::P0_0);
+DigitalEncoder left_encoder(FEHIO::P0_1);
+FEHMotor right_motor(FEHMotor::Motor3,9.0);
+FEHMotor left_motor(FEHMotor::Motor1,9.0);
 
 /* This function waits for the red start light to trigger the robot to start */
 void waitForStartLight() {
@@ -81,6 +85,75 @@ void checkpoint1A() {
     stop();
 }
 */
+
+int distance_to_count(int distance){
+    return (distance*318)/(2*M_PI*1.25);
+}
+
+void move_forward(int percent, int counts) //using encoders
+{
+    //Reset encoder counts
+    right_encoder.ResetCounts();
+    left_encoder.ResetCounts();
+
+    //Set both motors to desired percent
+    right_motor.SetPercent(percent);
+    left_motor.SetPercent(percent);
+
+    //While the average of the left and right encoder is less than counts,
+    //keep running motors
+    while((left_encoder.Counts() + right_encoder.Counts()) / 2. < counts);
+
+    //Turn off motors
+    right_motor.Stop();
+    left_motor.Stop();
+}
+
+void turn_right(int percent, int counts) //using encoders
+{
+
+    //Reset encoder counts
+    right_encoder.ResetCounts();
+    left_encoder.ResetCounts();
+
+    //Set both motors to desired percent
+    //hint: set right motor backwards, left motor forwards
+    right_motor.SetPercent(-1*percent);
+    left_motor.SetPercent(percent);
+
+
+    //While the average of the left and right encoder is less than counts, keep running motors
+
+    while((left_encoder.Counts() + right_encoder.Counts()) / 2. < counts);
+
+    //Turn off motors
+    right_motor.Stop();
+    left_motor.Stop();
+
+}
+
+void turn_left(int percent, int counts) //using encoders
+{
+
+    //Reset encoder counts
+    right_encoder.ResetCounts();
+    left_encoder.ResetCounts();
+
+    //Set both motors to desired percent
+    //hint: set right motor backwards, left motor forwards
+    right_motor.SetPercent(percent);
+    left_motor.SetPercent(-1*percent);
+
+
+    //While the average of the left and right encoder is less than counts, keep running motors
+
+    while((left_encoder.Counts() + right_encoder.Counts()) / 2. < counts);
+
+    //Turn off motors
+    right_motor.Stop();
+    left_motor.Stop();
+
+}
 
 void checkpoint2()
 {
