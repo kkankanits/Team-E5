@@ -86,7 +86,7 @@ void checkpoint1A() {
 */
 
 int distance_to_count(int distance){
-    return (distance*318)/(2*M_PI*1.25);
+    return (distance*318)/(2*M_PI*WHEEL_Radius);
 }
 
 void move_forward(int percent, int counts) //using encoders 
@@ -143,9 +143,7 @@ void turn_left(int percent, int counts) //using encoders 50, 250 for 90 degrees
     right_motor.SetPercent(percent);
     left_motor.SetPercent(-1*percent);
 
-
     //While the average of the left and right encoder is less than counts, keep running motors
-
     while((left_encoder.Counts() + right_encoder.Counts()) / 2. < counts);
 
     //Turn off motors
@@ -154,11 +152,56 @@ void turn_left(int percent, int counts) //using encoders 50, 250 for 90 degrees
 
 }
 
+//true is red, false is blue
+bool checkColorLight() {
+    if(cds.Value() < 2)
+        return true;
+    return false;
+}
+
 void checkpoint2()
 {
-     move_forward(25, distance_to_count(19));
+    waitForStartLight();
 
-     turn_right(50, 200);
+    // get out of start light area
+    move_forward(25, distance_to_count(15));
+    
+    // turn left facing the fuel switches
+    turn_left(50, 150);
+
+    // forward towards the left steeper ramp
+    move_forward(25, distance_to_count(10.3));
+
+    // turn right to face ramp
+    turn_right(50, 250);
+
+    // get up ramp and closer to color light
+    move_forward(25, distance_to_count(35));
+
+    // turn towards light (slight right turn)
+    turn_right(50, 150);
+
+    // move to get the sensor above the color light 
+    move_forward(25, distance_to_count(9));
+
+    Sleep(1);
+    checkColorLight();
+    
+    // if red, press red button
+    if (checkColorLight) {
+        move_forward(-25, distance_to_count(9));
+
+        turn_right(50, 100);
+
+        move_forward(25, distance_to_count(6));
+
+    } else { // press blue button
+        move_forward(-25, distance_to_count(9));
+
+        turn_right(50, 100);
+
+        move_forward(25, distance_to_count(10));
+    }
 }
 
 int main(void)
