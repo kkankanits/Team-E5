@@ -177,14 +177,10 @@ void checkpoint2()
     move_forward(25, distance_to_count(36));
 
     // turn towards light (slight right turn)
-    turn_right(50, 150);
+    turn_right(50, 155);
 
     // move to get the sensor above the color light 
-    move_forward(25, distance_to_count(7));
-
-    while(cds.Value() > 2) {
-        move_forward(25, distance_to_count(.1));
-    }
+    move_forward(25, distance_to_count(8));
 
     Sleep(1.0);
 
@@ -198,7 +194,7 @@ void checkpoint2()
         //drive towards button
         move_forward(25, distance_to_count(10));
         //turn towards button
-        turn_left(50, 300);
+        turn_left(50, 295);
     }
     else {
         LCD.Clear(BLACK);
@@ -210,7 +206,7 @@ void checkpoint2()
         //drive towards button
         move_forward(25, distance_to_count(6));
         //turn towards button
-        turn_left(50, 300);
+        turn_left(50, 295);
     }
 
 }
