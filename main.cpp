@@ -67,7 +67,7 @@ void checkpoint1A() {
 void waitForStartLight() {
     //detect any light (will have to change to red)
     while(cds.Value() >= 2.0) {
-
+        
     }
 }
 
@@ -87,7 +87,7 @@ void move_forward(int percent, int counts) //using encoders
 
     //While the average of the left and right encoder is less than counts,
     //keep running motors
-    while((left_encoder.Counts() + right_encoder.Counts()) / 2. < counts);
+    while(((left_encoder.Counts() + right_encoder.Counts()) / 2.) < counts);
 
     //Turn off motors
     right_motor.Stop();
@@ -147,7 +147,7 @@ void turn_left(int percent, int counts) //using encoders 50, 250 for 90 degrees
 bool isRedLight() {
     //blue is less than 2, red is less than 1
     //LCD.Write(cds.Value());
-    if(cds.Value() <= 1.3) {
+    if(cds.Value() <= 1.1) {
         return 1;
     }
     else {
@@ -158,23 +158,25 @@ bool isRedLight() {
 void checkpoint2()
 {
     waitForStartLight();
+    Sleep(0.5);
+
     //hit the start button
-    move_backward(25, distance_to_count(2));
+    move_backward(25, distance_to_count(1.8));
 
     // get out of start light area
     move_forward(25, distance_to_count(16));
     
     // turn left facing the fuel switches
-    turn_left(50, 150);
+    turn_left(50, 120);
 
     // forward towards the left steeper ramp
-    move_forward(25, distance_to_count(10.5));
+    move_forward(25, distance_to_count(10.8));
 
     // turn right to face ramp
-    turn_right(50, 295);
+    turn_right(50, 310);
 
     // get up ramp and closer to color light
-    move_forward(25, distance_to_count(36));
+    move_forward(25, distance_to_count(37));
 
     // turn towards light (slight right turn)
     turn_right(50, 155);
@@ -187,26 +189,52 @@ void checkpoint2()
     if(isRedLight()) {
         LCD.Clear(BLACK);
         LCD.Write("RED");
+
         //move backward a little to give space for turning
         move_backward(25, distance_to_count(2));
+
         //turn to make the arm face the ticket kiosk
         turn_right(50, 140);
+        
         //drive towards button
-        move_forward(25, distance_to_count(10));
+        move_forward(25, distance_to_count(12));
+
         //turn towards button
-        turn_left(50, 295);
+        turn_left(50, 280);
+
+        //drive towards button
+        move_forward(25, distance_to_count(2));
+
+        //move backward away from ticket kiosk
+        move_backward(25, distance_to_count(10));
+
+        //turn towards ramp
+        turn_left(50, 280);
     }
     else {
         LCD.Clear(BLACK);
         LCD.Write("BLUE");
+
         //move backward a little to give space for turning
         move_backward(25, distance_to_count(2));
+
         //turn to make the arm face the ticket kiosk
         turn_right(50, 140);
+
         //drive towards button
-        move_forward(25, distance_to_count(6));
+        move_forward(25, distance_to_count(8.3));
+
         //turn towards button
-        turn_left(50, 295);
+        turn_left(50, 265);
+
+        //drive towards button
+        move_forward(25, distance_to_count(2));
+
+        //move backward away from ticket kiosk
+        move_backward(25, distance_to_count(10));
+
+        //turn towards ramp
+        turn_left(50, 280);
     }
 
 }
