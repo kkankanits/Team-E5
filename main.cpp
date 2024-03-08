@@ -177,10 +177,10 @@ void checkpoint2()
     move_forward(25, distance_to_count(27), 20.);
 
     //turn right after got up the ramp bc it steer to the left
-    turn_right(50, 40, 2.0);
+    turn_right(50, 20, 2.0);
 
     // get up ramp and closer to color light
-    move_forward(25, distance_to_count(9.7), 10.);
+    move_forward(25, distance_to_count(10), 10.);
 
     // turn towards light (slight right turn)
     turn_right(50, 170, 5.);
@@ -198,16 +198,16 @@ void checkpoint2()
     if(isRedLight()) {
         LCD.Clear(BLACK);
         LCD.Write("RED");
-        distanceToButton = 11;
-        turntoButton = 250;  
-        distanceToRamp = 11;
+        distanceToButton = 13;
+        turntoButton = 170;  
+        distanceToRamp = 13;
         red = 1;
     }
     else {
         LCD.Clear(BLACK);
         LCD.Write("BLUE");
         distanceToButton = 12;
-        turntoButton = 270;  
+        turntoButton = 275;  
         distanceToRamp = 8.5;
     }
 
@@ -223,11 +223,19 @@ void checkpoint2()
     //turn towards button
     turn_left(50, turntoButton, 5.);
 
+    if(red){
+        //move forward toward passport stamp
+        move_forward(25, distance_to_count(4.2), 5.);
+
+        //turn left to face the button
+        turn_left(50, 105, 3.);
+    }
+
     //drive backward from button (for space)
     move_backward(25, distance_to_count(2), 5.);
 
     //drive towards button
-    move_forward(25, distance_to_count(7), 5.);
+    move_forward(25, distance_to_count(8.5), 5.);
 
     //move backward away from ticket kiosk
     move_backward(25, distance_to_count(10), 15.);
@@ -238,11 +246,19 @@ void checkpoint2()
     //move forward to ramp
     move_forward(25, distance_to_count(distanceToRamp), 15.);
 
+    //split the code to prevent the robot from hitting the wall
+
+    //turn left halfway to go down the ramp
+    turn_left(50, 205, 5.);
+
+    //move forward to ramp
+    move_forward(25, distance_to_count(4.5), 5.);
+
     //turn left to go down the ramp
-    turn_left(50, 275, 5.);
+    turn_left(50, 35, 5.);
 
     //move forward down the ramp
-    move_forward(25, distance_to_count(15), 30.);
+    move_forward(25, distance_to_count(20), 20.);
 
 }
 
