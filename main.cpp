@@ -10,16 +10,18 @@
 #define WHEEL_Radius 1.25
 #define TRANSLATIONS_PER_REV 318.0
 #define BATTERY_FULL 11.5
+#define SERVO_MIN 500
+#define SERVO_MAX 2270
 
-
+//Declaration for CdS cell
 AnalogInputPin cds(FEHIO::P3_7);
-
-
 //Declarations for encoders & motors
 DigitalEncoder right_encoder(FEHIO::P0_0);
 DigitalEncoder left_encoder(FEHIO::P0_1);
 FEHMotor right_motor(FEHMotor::Motor3,9.0);
 FEHMotor left_motor(FEHMotor::Motor1,9.0);
+//Declaration for servo motor
+FEHServo arm_servo(FEHServo::Servo7); 
 
 /*
 // This function programmed the robot for checkpoint 1 using distance 
@@ -158,6 +160,11 @@ bool isRedLight() {
     }
 }
 
+void setMinMaxServo() {
+    arm_servo.SetMin(SERVO_MIN);
+    arm_servo.SetMax(SERVO_MAX);
+}
+
 void checkpoint2()
 {
     waitForStartLight();
@@ -269,40 +276,69 @@ void checkpoint2()
 
 void checkpoint3()
 {
+    //set servo motor min and mac
+    setMinMaxServo();
+
+    //reset servo motor
+    arm_servo.SetDegree(30);
+
+    //wait for start light
     Sleep(0.5);
     waitForStartLight();
 
     //hit the start button
-    move_backward(25, distance_to_count(3.5), 2.);
+    move_backward(25, distance_to_count(3.5), 1.5);
 
     // get out of start light area
     move_forward(25, distance_to_count(21.5), 5.);
     
     // turn left toward the fuel switches
-    turn_left(50, 120, 3.);
+    turn_left(50, 110, 3.);
 
     // move to the fuel lever
     move_forward(25, distance_to_count(4.5), 5.);
 
     // turn left facing the fuel switches
-    turn_left(50, 220, 3.);
+    turn_left(50, 200, 3.);
 
-    // back up a little to giv
+    // back up a little to give space
+    move_backward(25, distance_to_count(3.7), 3.);
+
+    float start = TimeNow();
+    //timeout if servo doesnt move
+    while(TimeNow() - start < 2.0) {
+        //flip the lever down
+        arm_servo.SetDegree(143);
+    }
+    
+    //reverse backward 
     move_backward(25, distance_to_count(3), 3.);
+
+    // //sleep for 5 sec
+    // Sleep(5.0);
+
+    //move the servo down a bit
+    arm_servo.SetDegree(160);
+
+    //move up to the lever
+    move_forward(25, distance_to_count(3), 3.);
+
+    //lift the lever back up
+    arm_servo.SetDegree(140);
+
+    // move up a little to give space
+    move_backward(25, distance_to_count(3), 3.);
+
+    
 }
+
 
 int main(void)
 {
-    // while(true) {
-    //     LCD.Write(cds.Value());
-    //     Sleep(1.0);
-    //     LCD.Clear(BLACK);
-        
-    // }
-
     // test comment
     LCD.Clear(BLACK);
 
+    //code for checkpoint 3
     checkpoint3();
 
     return 0;
