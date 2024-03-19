@@ -2,12 +2,14 @@
 #include <FEHServo.h>
 #include <FEHLCD.h>
 #include <FEHMotor.h>
+#include <FEHBattery.h>
 #include <FEHIO.h>
 #include <cmath>
 #include <math.h>
 
 #define WHEEL_Radius 1.25
 #define TRANSLATIONS_PER_REV 318.0
+#define BATTERY_FULL 11.5
 
 
 AnalogInputPin cds(FEHIO::P3_7);
@@ -73,8 +75,9 @@ int distance_to_count(int distance){
     return (distance*TRANSLATIONS_PER_REV)/(2*M_PI*WHEEL_Radius);
 }
 
-void move_forward(int percent, int counts, float timeout) //using encoders 
+void move_forward(float percent, int counts, float timeout) //using encoders 
 {
+    percent = (BATTERY_FULL / Battery.Voltage()) * percent;
     //Reset encoder counts
     right_encoder.ResetCounts();
     left_encoder.ResetCounts();
@@ -94,13 +97,14 @@ void move_forward(int percent, int counts, float timeout) //using encoders
     left_motor.Stop();
 }
 
-void move_backward(int percent, int counts, float timeout)
+void move_backward(float percent, int counts, float timeout)
 {
     move_forward(-1*percent, counts, timeout);
 }
 
-void turn_right(int percent, int counts, float timeout) //using encoders 50, 250 for 90 degree
+void turn_right(float percent, int counts, float timeout) //using encoders 50, 250 for 90 degree
 {
+    percent = (BATTERY_FULL / Battery.Voltage()) * percent;
     //Reset encoder counts
     right_encoder.ResetCounts();
     left_encoder.ResetCounts();
@@ -120,8 +124,9 @@ void turn_right(int percent, int counts, float timeout) //using encoders 50, 250
 
 }
 
-void turn_left(int percent, int counts, float timeout) //using encoders 50, 250 for 90 degrees
+void turn_left(float percent, int counts, float timeout) //using encoders 50, 250 for 90 degrees
 {
+    percent = (BATTERY_FULL / Battery.Voltage()) * percent;
     //Reset encoder counts
     right_encoder.ResetCounts();
     left_encoder.ResetCounts();
@@ -262,6 +267,30 @@ void checkpoint2()
 
 }
 
+void checkpoint3()
+{
+    Sleep(0.5);
+    waitForStartLight();
+
+    //hit the start button
+    move_backward(25, distance_to_count(3.5), 2.);
+
+    // get out of start light area
+    move_forward(25, distance_to_count(21.5), 5.);
+    
+    // turn left toward the fuel switches
+    turn_left(50, 120, 3.);
+
+    // move to the fuel lever
+    move_forward(25, distance_to_count(4.5), 5.);
+
+    // turn left facing the fuel switches
+    turn_left(50, 220, 3.);
+
+    // back up a little to giv
+    move_backward(25, distance_to_count(3), 3.);
+}
+
 int main(void)
 {
     // while(true) {
@@ -274,7 +303,7 @@ int main(void)
     // test comment
     LCD.Clear(BLACK);
 
-    checkpoint2();
+    checkpoint3();
 
     return 0;
 
