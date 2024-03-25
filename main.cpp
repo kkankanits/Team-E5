@@ -4,6 +4,7 @@
 #include <FEHMotor.h>
 #include <FEHBattery.h>
 #include <FEHIO.h>
+#include <FEHRCS.h>
 #include <cmath>
 #include <math.h>
 
@@ -282,6 +283,9 @@ void checkpoint3()
     //reset servo motor
     arm_servo.SetDegree(30);
 
+    // Initialize the RCS
+    RCS.InitializeTouchMenu("E5NPDU9yC");
+
     //wait for start light
     Sleep(0.5);
     waitForStartLight();
@@ -295,14 +299,38 @@ void checkpoint3()
     // turn left toward the fuel switches
     turn_left(50, 110, 3.);
 
+    // Get correct lever from the RCS
+    int correctLever = 0;
+    //int correctLever = RCS.GetCorrectLever();
+    LCD.Write(correctLever);
+    //A = 4.5
+    float distanceToLever;
+     
+    // Check which lever to flip and perform some action
+    if(correctLever == 0)
+    {
+        // Perform actions to flip left lever
+        distanceToLever = 4.5;
+    } 
+    else if(correctLever == 1)
+    {
+        // Perform actions to flip middle lever
+        distanceToLever = 7.5;
+    }
+    else if(correctLever == 2)
+    {
+       // Perform actions to flip right lever
+       distanceToLever = 9;
+    }
+
     // move to the fuel lever
-    move_forward(25, distance_to_count(4.5), 5.);
+    move_forward(25, distance_to_count(distanceToLever), 8.);
 
     // turn left facing the fuel switches
     turn_left(50, 200, 3.);
 
     // back up a little to give space
-    move_backward(25, distance_to_count(3.7), 3.);
+    move_backward(25, distance_to_count(3.8), 3.);
 
     float start = TimeNow();
     //timeout if servo doesnt move
@@ -314,8 +342,8 @@ void checkpoint3()
     //reverse backward 
     move_backward(25, distance_to_count(3), 3.);
 
-    // //sleep for 5 sec
-    // Sleep(5.0);
+    //sleep for 5 sec
+    Sleep(7.0);
 
     //move the servo down a bit
     arm_servo.SetDegree(160);
