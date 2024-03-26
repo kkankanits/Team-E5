@@ -360,6 +360,47 @@ void checkpoint3()
     
 }
 
+void checkpoint4()
+{
+    
+    waitForStartLight();
+    Sleep(0.5);
+
+    //hit the start button
+    move_backward(25, distance_to_count(1.8), 2.);
+
+    // get out of start light area
+    move_forward(25, distance_to_count(16), 15.);
+    
+    // turn left facing the fuel switches
+    turn_right(50, 120, 5.);
+    
+    // forward towards the left steeper ramp
+    move_forward(25, distance_to_count(10.8), 15.);
+    
+
+    // turn right to face ramp
+    turn_right(50, 200, 10.0);
+
+    /*
+
+    // get up ramp and closer to color light
+    move_forward(25, distance_to_count(27), 20.);
+
+    //turn right after got up the ramp bc it steer to the left
+    turn_right(50, 20, 2.0);
+
+    // get up ramp and closer to color light
+    move_forward(25, distance_to_count(10), 10.);
+
+    // turn towards light (slight right turn)
+    turn_right(50, 170, 5.);
+
+    // move to get the sensor above the color light 
+    move_forward(25, distance_to_count(8), 4.);
+    */
+     
+}
 
 int main(void)
 {
@@ -367,7 +408,7 @@ int main(void)
     LCD.Clear(BLACK);
 
     //code for checkpoint 3
-    checkpoint3();
+    checkpoint4();
 
     return 0;
 
