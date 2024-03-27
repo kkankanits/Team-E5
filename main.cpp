@@ -360,10 +360,7 @@ void checkpoint3()
 
     
 }
-
-void checkpoint4()
-{
-    
+  
    void checkpoint4() {
     //set servo motor min and mac
     setMinMaxServo();
@@ -456,11 +453,7 @@ void checkpoint4()
     //turn right to leave
     turn_right(50, 40, 1.);
 
-
-
-}
-     
-}
+   }
 
 int main(void)
 {
