@@ -364,42 +364,101 @@ void checkpoint3()
 void checkpoint4()
 {
     
+   void checkpoint4() {
+    //set servo motor min and mac
+    setMinMaxServo();
+
+    //reset servo motor
+    arm_servo.SetDegree(30);
+
+    //wait for start light
     waitForStartLight();
-    Sleep(0.5);
 
     //hit the start button
-    move_backward(25, distance_to_count(1.8), 2.);
+    move_backward(25, distance_to_count(3.5), 1.3);
 
     // get out of start light area
-    move_forward(25, distance_to_count(16), 15.);
+    move_forward(25, distance_to_count(18), 5.);
     
-    // turn left facing the fuel switches
-    turn_right(50, 120, 5.);
-    
+    // turn left toward the fuel switches
+    turn_left(50, 105, 2.);
+
     // forward towards the left steeper ramp
-    move_forward(25, distance_to_count(10.8), 15.);
-    
+    move_forward(25, distance_to_count(11), 15.);
 
     // turn right to face ramp
-    turn_right(50, 200, 10.0);
+    turn_right(50, 230, 2.0);
 
-    /*
+    //line up with the ramp
+    move_forward(25, distance_to_count(2), 20.);
 
-    // get up ramp and closer to color light
-    move_forward(25, distance_to_count(27), 20.);
+    // get up ramp 
+    move_forward(40, distance_to_count(10), 20.);
 
-    //turn right after got up the ramp bc it steer to the left
-    turn_right(50, 20, 2.0);
+    //turn left slightly on the ramp bc it steer to the right
+    turn_right(50, 15, 3.0);
 
-    // get up ramp and closer to color light
-    move_forward(25, distance_to_count(10), 10.);
+    // get up ramp completely
+    move_forward(40, distance_to_count(12), 20.);
 
-    // turn towards light (slight right turn)
-    turn_right(50, 170, 5.);
+    //turn right after got up the ramp to face passport lever
+    turn_right(50, 212, 2.0);
 
-    // move to get the sensor above the color light 
-    move_forward(25, distance_to_count(8), 4.);
-    */
+    //move to get closer to passport lever
+    move_forward(25, distance_to_count(16.2), 10.);
+
+    // turn right to face luggage
+    turn_right(50, 230, 3.);
+
+    //backup to get the back of the robot close to ticket kiosk
+    move_backward(25, distance_to_count(15), 10.);
+
+    //move the arm down
+    arm_servo.SetDegree(178);
+
+    //back up a little
+    move_backward(25, distance_to_count(5), 10.);
+
+    //turn the robot left to position the arm under the lever
+    turn_left(50, 20, 1.);
+
+    float start = TimeNow();
+    //timeout if servo doesnt move
+    while(TimeNow() - start < 2.0) {
+        //turn the arm up a little to flip it
+        arm_servo.SetDegree(110);
+    }
+
+    //turn the robot left to position the arm under the lever
+    turn_left(50, 10, 1.);
+
+    //back up a little more
+    move_backward(25, distance_to_count(.5), 10.);
+
+    //move the arm up a little
+     start = TimeNow();
+    //timeout if servo doesnt move
+    while(TimeNow() - start < 2.0) {
+        //turn the arm up a little to flip it
+        arm_servo.SetDegree(90);
+    }
+    //turn left a little more
+    turn_left(50, 10, 1.);
+
+    //move the arm up a little
+     start = TimeNow();
+    //timeout if servo doesnt move
+    while(TimeNow() - start < 1.0) {
+        //turn the arm up a little to flip it
+        arm_servo.SetDegree(80);
+    }
+
+    //turn right to leave
+    turn_right(50, 40, 1.);
+
+
+
+}
      
 }
 
