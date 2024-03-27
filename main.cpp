@@ -70,6 +70,7 @@ void checkpoint1A() {
 
 /* This function waits for the red start light to trigger the robot to start */
 void waitForStartLight() {
+    Sleep(0.5);
     //detect any light (will have to change to red)
     while(cds.Value() >= 2.0);
 }
