@@ -378,13 +378,13 @@ void checkpoint4() {
     move_forward(25, distance_to_count(18), 5.);
     
     // turn left toward the fuel switches
-    turn_left(50, 110, 2.);
+    turn_left(50, 105, 2.);
 
     // forward towards the left steeper ramp
     move_forward(25, distance_to_count(11), 15.);
 
     // turn right to face ramp
-    turn_right(50, 220, 2.0);
+    turn_right(50, 230, 2.0);
 
     //line up with the ramp
     move_forward(25, distance_to_count(2), 20.);
@@ -393,19 +393,19 @@ void checkpoint4() {
     move_forward(40, distance_to_count(10), 20.);
 
     //turn left slightly on the ramp bc it steer to the right
-    turn_right(50, 10, 2.0);
+    turn_right(50, 15, 3.0);
 
     // get up ramp completely
     move_forward(40, distance_to_count(12), 20.);
 
     //turn right after got up the ramp to face passport lever
-    turn_right(50, 220, 2.0);
+    turn_right(50, 212, 2.0);
 
     //move to get closer to passport lever
-    move_forward(25, distance_to_count(16.6), 10.);
+    move_forward(25, distance_to_count(16.2), 10.);
 
     // turn right to face luggage
-    turn_right(50, 230, 2.);
+    turn_right(50, 230, 3.);
 
     //backup to get the back of the robot close to ticket kiosk
     move_backward(25, distance_to_count(15), 10.);
@@ -414,7 +414,7 @@ void checkpoint4() {
     arm_servo.SetDegree(178);
 
     //back up a little
-    move_backward(25, distance_to_count(4), 10.);
+    move_backward(25, distance_to_count(5), 10.);
 
     //turn the robot left to position the arm under the lever
     turn_left(50, 20, 1.);
@@ -427,7 +427,7 @@ void checkpoint4() {
     }
 
     //turn the robot left to position the arm under the lever
-    turn_left(50, 20, 1.);
+    turn_left(50, 10, 1.);
 
     //back up a little more
     move_backward(25, distance_to_count(.5), 10.);
