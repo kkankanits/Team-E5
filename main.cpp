@@ -360,6 +360,7 @@ void checkpoint3()
 
     
 }
+/*
   
    void checkpoint4() {
     //set servo motor min and mac
@@ -454,6 +455,56 @@ void checkpoint3()
     turn_right(50, 40, 1.);
 
    }
+   */
+  void checkpoint4()
+  {
+        //set servo motor min and mac
+        setMinMaxServo();
+
+        //wait for start light
+        waitForStartLight();
+
+        //hit the start button
+        move_backward(25, distance_to_count(3.5), 1.3);
+
+        // get out of start light area
+        move_forward(25, distance_to_count(1), 5.);
+
+        //turn right towards big ramp
+        turn_right(50, 100, 2.0);
+
+        //move the armm down
+        arm_servo.SetDegree(20);
+
+        //move to the ramp
+        move_forward(25, distance_to_count(15.5), 2.0);
+
+        //move up the ramp
+        move_forward(50, distance_to_count(26), 2.0);
+        
+        //lower arm
+        arm_servo.SetDegree(0);
+
+        //turn left 90
+        turn_left(50, 230, 5.0);
+
+        //move forward to adjust
+        move_forward(25, distance_to_count(4), 5.0);
+
+        //turn left 90
+        turn_right(50, 210, 5.0);
+
+        //move toward passport lever
+        move_forward(25, distance_to_count(5), 2.0);
+        
+        arm_servo.SetDegree(65);
+
+        Sleep(2.0);
+
+        move_forward(25, distance_to_count(7), 2.0);
+
+        
+  }
 
 int main(void)
 {
