@@ -465,13 +465,13 @@ void checkpoint3()
         waitForStartLight();
 
         //hit the start button
-        move_backward(25, distance_to_count(3.5), 1.3);
+        move_backward(25, distance_to_count(2), 1.3);
 
         // get out of start light area
-        move_forward(25, distance_to_count(1), 5.);
+        move_forward(25, distance_to_count(1), 5.0);
 
         //turn right towards big ramp
-        turn_right(50, 100, 2.0);
+        turn_right(50, 110, 2.0);
 
         //move the armm down
         arm_servo.SetDegree(20);
@@ -480,7 +480,7 @@ void checkpoint3()
         move_forward(25, distance_to_count(15.5), 2.0);
 
         //move up the ramp
-        move_forward(50, distance_to_count(26), 2.0);
+        move_forward(45, distance_to_count(23), 10);
         
         //lower arm
         arm_servo.SetDegree(0);
@@ -489,19 +489,24 @@ void checkpoint3()
         turn_left(50, 230, 5.0);
 
         //move forward to adjust
-        move_forward(25, distance_to_count(4), 5.0);
+        move_forward(25, distance_to_count(5.5), 5.0);
 
         //turn left 90
         turn_right(50, 210, 5.0);
 
         //move toward passport lever
-        move_forward(25, distance_to_count(5), 2.0);
+        move_forward(25, distance_to_count(4.75), 2.0);
+
         
         arm_servo.SetDegree(65);
 
         Sleep(2.0);
 
-        move_forward(25, distance_to_count(7), 2.0);
+        //flip
+        move_forward(25, distance_to_count(5), 5.0);
+
+        //flip back
+        move_backward(25, distance_to_count(10), 5.0);
 
         
   }
