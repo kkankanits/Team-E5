@@ -11,21 +11,23 @@
 #define WHEEL_Radius 1.25
 #define TRANSLATIONS_PER_REV 318.0
 #define BATTERY_FULL 11.5
-#define SERVO_MIN 500
-#define SERVO_MAX 2270
+#define ARM_SERVO_MIN 500
+#define ARM_SERVO_MAX 2270
+#define RAMP_SERVO_MIN 581
+#define RAMP_SERVO_MAX 2301
 
 //Declaration for CdS cell
 AnalogInputPin cds(FEHIO::P3_7);
 //Declarations for encoders & motors
-DigitalEncoder right_encoder(FEHIO::P0_0);
-DigitalEncoder left_encoder(FEHIO::P0_1);
-FEHMotor right_motor(FEHMotor::Motor3,9.0);
-FEHMotor left_motor(FEHMotor::Motor1,9.0);
+DigitalEncoder rightEncoder(FEHIO::P0_0);
+DigitalEncoder leftEncoder(FEHIO::P0_1);
+FEHMotor rightMotor(FEHMotor::Motor3,9.0);
+FEHMotor leftMotor(FEHMotor::Motor1,9.0);
 //Declaration for servo motor
-FEHServo arm_servo(FEHServo::Servo7);
+FEHServo armServo(FEHServo::Servo7);
 
 //declaration for luggage mechanism;
-FEHServo luggage(FEHServo::Servo6);
+FEHServo rampServo(FEHServo::Servo0);
 
 /* This function waits for the red start light to trigger the robot to start */
 void waitForStartLight() {
@@ -42,22 +44,22 @@ void moveForward(float percent, int counts, float timeout) //using encoders
 {
     percent = (BATTERY_FULL / Battery.Voltage()) * percent;
     //Reset encoder counts
-    right_encoder.ResetCounts();
-    left_encoder.ResetCounts();
+    rightEncoder.ResetCounts();
+    leftEncoder.ResetCounts();
 
     //Set both motors to desired percent
-    right_motor.SetPercent(percent);
-    left_motor.SetPercent(percent);
+    rightMotor.SetPercent(percent);
+    leftMotor.SetPercent(percent);
 
     float start = TimeNow();
 
     //While the average of the left and right encoder is less than counts,
     //keep running motors
-    while((((left_encoder.Counts() + right_encoder.Counts()) / 2.) < counts) && (TimeNow() - start < timeout));
+    while((((leftEncoder.Counts() + rightEncoder.Counts()) / 2.) < counts) && (TimeNow() - start < timeout));
 
     //Turn off motors
-    right_motor.Stop();
-    left_motor.Stop();
+    rightMotor.Stop();
+    leftMotor.Stop();
 }
 
 void moveBackward(float percent, int counts, float timeout)
@@ -69,21 +71,21 @@ void turnRight(float percent, int counts, float timeout) //using encoders 50, 25
 {
     percent = (BATTERY_FULL / Battery.Voltage()) * percent;
     //Reset encoder counts
-    right_encoder.ResetCounts();
-    left_encoder.ResetCounts();
+    rightEncoder.ResetCounts();
+    leftEncoder.ResetCounts();
 
     //set right motor backwards, left motor forwards
-    right_motor.SetPercent(-1*percent);
-    left_motor.SetPercent(percent);
+    rightMotor.SetPercent(-1*percent);
+    leftMotor.SetPercent(percent);
 
     float start = TimeNow();
 
     //While the average of the left and right encoder is less than counts, keep running motors
-    while(((left_encoder.Counts() + right_encoder.Counts()) / 2. < counts) && (TimeNow() - start < timeout));
+    while(((leftEncoder.Counts() + rightEncoder.Counts()) / 2. < counts) && (TimeNow() - start < timeout));
 
     //Turn off motors
-    right_motor.Stop();
-    left_motor.Stop();
+    rightMotor.Stop();
+    leftMotor.Stop();
 
 }
 
@@ -91,21 +93,21 @@ void turnLeft(float percent, int counts, float timeout) //using encoders 50, 250
 {
     percent = (BATTERY_FULL / Battery.Voltage()) * percent;
     //Reset encoder counts
-    right_encoder.ResetCounts();
-    left_encoder.ResetCounts();
+    rightEncoder.ResetCounts();
+    leftEncoder.ResetCounts();
 
     //set right motor backwards, left motor forwards
-    right_motor.SetPercent(percent);
-    left_motor.SetPercent(-1*percent);
+    rightMotor.SetPercent(percent);
+    leftMotor.SetPercent(-1*percent);
 
     float start = TimeNow();
 
     //While the average of the left and right encoder is less than counts, keep running motors
-    while(((left_encoder.Counts() + right_encoder.Counts()) / 2. < counts) && (TimeNow() - start < timeout));
+    while(((leftEncoder.Counts() + rightEncoder.Counts()) / 2. < counts) && (TimeNow() - start < timeout));
 
     //Turn off motors
-    right_motor.Stop();
-    left_motor.Stop();
+    rightMotor.Stop();
+    leftMotor.Stop();
 
 }
 
@@ -121,17 +123,33 @@ bool isRedLight() {
     }
 }
 
-void setMinMaxServo() {
-    arm_servo.SetMin(SERVO_MIN);
-    arm_servo.SetMax(SERVO_MAX);
+void setMinMaxArmServo() {
+    armServo.SetMin(ARM_SERVO_MIN);
+    armServo.SetMax(ARM_SERVO_MAX);
+}
+
+void setMinMaxRampServo() {
+    rampServo.SetMin(RAMP_SERVO_MIN);
+    rampServo.SetMax(RAMP_SERVO_MAX);
 }
 
  void checkpoint5()
  {
+    //setServoMinAndMax
+    setMinMaxArmServo();
+    setMinMaxRampServo();
+
+    //reset servo motor
+    armServo.SetDegree(40);
+    rampServo.SetDegree(0);
+
+    // Initialize the RCS
+    RCS.InitializeTouchMenu("E5NPDU9yC");
+
+    Sleep(.5);
     //wait for start light
     waitForStartLight();
 
-    //setServoMinAndMax
 
     //hit the start button
     moveBackward(25, distanceToCount(3.5), 1.3);
@@ -181,8 +199,6 @@ void setMinMaxServo() {
 
     //hit end button
     moveForward(25, 3.5, 10);
-
-
  }
 
 
