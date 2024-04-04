@@ -15,9 +15,11 @@
 #define ARM_SERVO_MAX 2270
 #define RAMP_SERVO_MIN 581
 #define RAMP_SERVO_MAX 2301
+#define LINE_SLOPE -0.0405
+#define LINE_INTERCEPT 2.1577
 
 //Declaration for CdS cell
-AnalogInputPin cds(FEHIO::P1_0);
+AnalogInputPin cds(FEHIO::P3_7);
 //Declarations for encoders & motors
 DigitalEncoder rightEncoder(FEHIO::P0_0);
 DigitalEncoder leftEncoder(FEHIO::P0_1);
@@ -36,13 +38,20 @@ void waitForStartLight() {
     while(cds.Value() >= 2.0);
 }
 
+float correctDistance(float distance, float power) {
+    return distance;
+}
+
 int distanceToCount(int distance){
     return (distance*TRANSLATIONS_PER_REV)/(2*M_PI*WHEEL_Radius);
 }
 
-void moveForward(float percent, int counts, float timeout) //using encoders 
+void moveForward(float percent, float distance, float timeout) //using encoders 
 {
     percent = (BATTERY_FULL / Battery.Voltage()) * percent;
+    distance = correctDistance(distance, percent);
+    int counts = distanceToCount(distance);
+
     //Reset encoder counts
     rightEncoder.ResetCounts();
     leftEncoder.ResetCounts();
@@ -62,9 +71,9 @@ void moveForward(float percent, int counts, float timeout) //using encoders
     leftMotor.Stop();
 }
 
-void moveBackward(float percent, int counts, float timeout)
+void moveBackward(float percent, float distance, float timeout)
 {
-    moveForward(-1*percent, counts, timeout);
+    moveForward(-1*percent, distance, timeout);
 }
 
 void turnRight(float percent, int counts, float timeout) //using encoders 50, 250 for 90 degree
@@ -140,7 +149,7 @@ void setMinMaxRampServo() {
     setMinMaxRampServo();
 
     //reset servo motor
-    armServo.SetDegree(40);
+    armServo.SetDegree(50);
     rampServo.SetDegree(0);
 
     // Initialize the RCS
@@ -152,36 +161,36 @@ void setMinMaxRampServo() {
 
 
     //hit the start button
-    moveBackward(25, distanceToCount(3), 1.3);
+    moveBackward(25, 3, 1.3);
 
     // get out of start light area
-    moveForward(25, distanceToCount(20), 5.);
+    moveForward(25, 20, 5.);
     
     // turn left toward the fuel switches
     turnLeft(50, 95, 2.0);
 
     // forward towards the left steeper ramp
-    moveForward(25, distanceToCount(9), 15.);
+    moveForward(25, 9, 15.);
 
     // turn right to face ramp
     turnRight(50, 240, 5);
 
     //line up with the ramp
-    moveForward(25, distanceToCount(2), 20.0);
+    moveForward(25, 2, 20.0);
 
     // get up ramp 
-    moveForward(50, distanceToCount(14), 20.0);
+    moveForward(50, 14, 20.0);
 
     //turn rught slightly on the ramp bc it steers to the left
     turnRight(50, 35, 3.0);
 
     // get up ramp completely
-    moveForward(50, distanceToCount(7), 20.0);
+    moveForward(50, 7, 20.0);
 
     turnRight(50, 245, 10);
 
     //move forward to align with luggage
-    moveForward(25, distanceToCount(7), 10);
+    moveForward(25, 7, 10);
 
     Sleep(2.0);
 
@@ -192,7 +201,7 @@ void setMinMaxRampServo() {
 
     /*
     //move forward towards next ramp
-    moveForward(25, distanceToCount(20), 10);
+    moveForward(25, 20, 10);
 
     //turn right to face ramp
     turnRight(50, 230, 10.0);
