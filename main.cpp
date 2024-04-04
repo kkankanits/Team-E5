@@ -17,7 +17,7 @@
 #define RAMP_SERVO_MAX 2301
 
 //Declaration for CdS cell
-AnalogInputPin cds(FEHIO::P3_7);
+AnalogInputPin cds(FEHIO::P1_0);
 //Declarations for encoders & motors
 DigitalEncoder rightEncoder(FEHIO::P0_0);
 DigitalEncoder leftEncoder(FEHIO::P0_1);
@@ -144,61 +144,68 @@ void setMinMaxRampServo() {
     rampServo.SetDegree(0);
 
     // Initialize the RCS
-    RCS.InitializeTouchMenu("E5NPDU9yC");
+    //RCS.InitializeTouchMenu("E5NPDU9yC");
 
-    Sleep(.5);
+    //Sleep(.5);
     //wait for start light
-    waitForStartLight();
+    //waitForStartLight();
 
 
     //hit the start button
-    moveBackward(25, distanceToCount(3.5), 1.3);
+    moveBackward(25, distanceToCount(3), 1.3);
 
     // get out of start light area
-    moveForward(25, distanceToCount(18), 5.);
+    moveForward(25, distanceToCount(20), 5.);
     
     // turn left toward the fuel switches
-    turnLeft(50, 105, 2.);
+    turnLeft(50, 95, 2.0);
 
     // forward towards the left steeper ramp
-    moveForward(25, distanceToCount(11), 15.);
+    moveForward(25, distanceToCount(9), 15.);
 
     // turn right to face ramp
-    turnRight(50, 230, 2.0);
+    turnRight(50, 240, 5);
 
     //line up with the ramp
-    moveForward(25, distanceToCount(2), 20.);
+    moveForward(25, distanceToCount(2), 20.0);
 
     // get up ramp 
-    moveForward(40, distanceToCount(10), 20.);
+    moveForward(50, distanceToCount(14), 20.0);
 
-    //turn left slightly on the ramp bc it steer to the right
-    turnRight(50, 15, 3.0);
+    //turn rught slightly on the ramp bc it steers to the left
+    turnRight(50, 35, 3.0);
 
     // get up ramp completely
-    moveForward(40, distanceToCount(15), 20.);
+    moveForward(50, distanceToCount(7), 20.0);
 
-    turnRight(50, 230, 10);
+    turnRight(50, 245, 10);
 
     //move forward to align with luggage
-    moveForward(25, distanceToCount(10), 10);
+    moveForward(25, distanceToCount(7), 10);
 
-    //drop luggage
+    Sleep(2.0);
 
+    //drop luggage 
+    rampServo.SetDegree(180);
+
+    Sleep(2.0);
+
+    /*
     //move forward towards next ramp
     moveForward(25, distanceToCount(20), 10);
 
     //turn right to face ramp
-    turnRight(50, 230, 10);
+    turnRight(50, 230, 10.0);
 
     //go down ramp
-    moveForward(25, 15.5, 15);
+    moveForward(25, 15.5, 15.0);
 
     //turn left to face button
-    turnLeft(50, 230, 10);
+    turnLeft(50, 230, 10.0);
 
     //hit end button
     moveForward(25, 3.5, 10);
+    */
  }
 
 
