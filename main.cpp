@@ -163,44 +163,63 @@ void setMinMaxRampServo() {
     moveBackward(25, distanceToCount(3.5), 1.3);
 
     // get out of start light area
-    moveForward(25, 2, 5.0);
+    moveForward(25, 1.8, 5.0);
 
     //turn right towards big ramp
-    turnRight(50, 110, 2.0);
+    turnRight(50, 100, 2.0);
 
     //move to the ramp
-    moveForward(25, 15.5, 2.0);
+    moveForward(25, 15.5, 5.0);
 
     //move up the ramp
-    moveForward(45, 24.2, 10);
+    moveForward(45, 11, 10);
+
+    // adjust the lean right, turn left slightly
+    //turnLeft(50, 15, 5);
+
+    //move up the ramp
+    moveForward(45, 11.5, 10);
 
     //turn right 90 degree
-    turnRight(50, 235, 2.0);
+    turnRight(50, 250, 2.0);
 
     //backward to the passport drop
-    moveBackward(25, 10, 5);
+    moveBackward(25, 20, 7);
 
     //drop luggage 
     rampServo.SetDegree(180);
 
     Sleep(2.0);
 
-    /*
-    //move forward towards next ramp
-    moveForward(25, 20, 10);
+    // move forward back to ramp
+    moveForward(25, 18, 7);
 
-    //turn right to face ramp
-    turnRight(50, 230, 10.0);
+    //turn right 90 degree
+    turnRight(50, 245, 2.0);
 
-    //go down ramp
-    moveForward(25, 15.5, 15.0);
+    //move down the ramp
+    moveForward(45, 11, 10);
 
-    //turn left to face button
-    turnLeft(50, 230, 10.0);
+    // adjust straight
+    turnRight(50, 15, 5);
 
-    //hit end button
-    moveForward(25, 3.5, 10);
-    */
+    //move down the ramp
+    moveForward(25, 11.5, 10);
+
+    // move forward to hit button
+    moveForward(25, 10, 10);
+
+    // turn right
+    turnRight(50, 230, 5);
+
+    // forward
+    moveForward(25, 10, 5);
+
+    // turn left
+    turnLeft(50, 280, 5);
+
+    // forward and hit end button
+    moveForward(25, 15, 5);
  }
 
 
