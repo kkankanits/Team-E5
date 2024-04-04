@@ -159,40 +159,26 @@ void setMinMaxRampServo() {
     //wait for start light
     //waitForStartLight();
 
-
     //hit the start button
-    moveBackward(25, 3, 1.3);
+    moveBackward(25, distanceToCount(3.5), 1.3);
 
     // get out of start light area
-    moveForward(25, 20, 5.);
-    
-    // turn left toward the fuel switches
-    turnLeft(50, 95, 2.0);
+    moveForward(25, 2, 5.0);
 
-    // forward towards the left steeper ramp
-    moveForward(25, 9, 15.);
+    //turn right towards big ramp
+    turnRight(50, 110, 2.0);
 
-    // turn right to face ramp
-    turnRight(50, 240, 5);
+    //move to the ramp
+    moveForward(25, 15.5, 2.0);
 
-    //line up with the ramp
-    moveForward(25, 2, 20.0);
+    //move up the ramp
+    moveForward(45, 24.2, 10);
 
-    // get up ramp 
-    moveForward(50, 14, 20.0);
+    //turn right 90 degree
+    turnRight(50, 235, 2.0);
 
-    //turn rught slightly on the ramp bc it steers to the left
-    turnRight(50, 35, 3.0);
-
-    // get up ramp completely
-    moveForward(50, 7, 20.0);
-
-    turnRight(50, 245, 10);
-
-    //move forward to align with luggage
-    moveForward(25, 7, 10);
-
-    Sleep(2.0);
+    //backward to the passport drop
+    moveBackward(25, 10, 5);
 
     //drop luggage 
     rampServo.SetDegree(180);
