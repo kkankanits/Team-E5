@@ -31,6 +31,10 @@ FEHServo armServo(FEHServo::Servo7);
 //declaration for luggage mechanism;
 FEHServo rampServo(FEHServo::Servo0);
 
+//declares bumpswithches
+DigitalInputPin leftBumpSwitch(FEHIO::P1_1);
+DigitalInputPin rightBumpSwitch(FEHIO::P1_2);
+
 /* This function waits for the red start light to trigger the robot to start */
 void waitForStartLight() {
     Sleep(0.5);
@@ -142,6 +146,37 @@ void setMinMaxRampServo() {
     rampServo.SetMax(RAMP_SERVO_MAX);
 }
 
+void forwardUntilSwitchPressed(int percent)
+{
+    percent = (BATTERY_FULL / Battery.Voltage()) * percent;
+
+
+    while(leftBumpSwitch.Value() || rightBumpSwitch.Value())
+    {
+        
+        if(!leftBumpSwitch.Value())
+        {
+            leftMotor.Stop();
+            rightMotor.SetPercent(percent);
+            
+        }
+        
+        else if(!rightBumpSwitch.Value())
+        {
+            rightMotor.Stop();
+            leftMotor.SetPercent(percent);
+
+        }
+        else{
+            rightMotor.SetPercent(percent);
+            leftMotor.SetPercent(percent);
+        }
+
+    }
+    rightMotor.Stop();
+    leftMotor.Stop();
+}
+
  void checkpoint5()
  {
     //setServoMinAndMax
@@ -223,14 +258,97 @@ void setMinMaxRampServo() {
 
  }
 
+ void taskSuitcase()
+ {
+    
+
+    // get out of start light area
+    moveForward(25, 2.3, 5.0);
+
+    //turn right towards big ramp
+    turnRight(50, 115, 2.0);
+
+    //move to the ramp
+    moveForward(25, 5, 4);
+    turnRight(50, 50, 2);
+    moveForward(25, 4, 2);
+    turnLeft(50, 50, 2);
+    moveForward(25, 5.5, 2);
+
+    //move up the ramp
+    moveForward(45, 10.5, 10);
+
+    // adjust the lean right, turn left slightly
+    turnRight(50, 5, 5);
+
+    //move up the ramp
+    moveForward(45, 13, 10);
+
+    //turn right 90 degree
+    turnRight(50, 250, 2.0);
+
+    //hit wall
+    forwardUntilSwitchPressed(25);
+
+    //backward to the passport drop
+    moveBackward(25, 20, 7);
+
+    //drop luggage 
+    rampServo.SetDegree(180);
+
+    Sleep(2.0);
+
+    // move forward back to ramp
+    forwardUntilSwitchPressed(25);
+ }
+
+//after suitcase
+ void taskPassport()
+ {
+    //move back to align with passport
+    moveBackward(25, 8.3, 5);
+
+    //turn to face passport
+    turnRight(50, 230, 5);
+
+    //move back to flip passport
+    moveBackward(45, 25, 5);
+
+    //move back to flip it back
+    moveForward(30, 15, 5);
+ }
+
+
+void finalRun()
+{
+    //setServoMinAndMax
+    setMinMaxArmServo();
+    setMinMaxRampServo();
+
+    //reset servo motor
+    armServo.SetDegree(50);
+    rampServo.SetDegree(0);
+
+    // Initialize the RCS
+    RCS.InitializeTouchMenu("E5NPDU9yC");
+
+    Sleep(.5);
+    //wait for start light
+    waitForStartLight();
+
+    //hit the start button
+    moveBackward(25, distanceToCount(3.5), 1.3);
+
+    taskSuitcase();
+    taskPassport();
+}
 
 int main(void)
 {
     // test comment
     LCD.Clear(BLACK);
 
-    //code for checkpoint 3
-    checkpoint5();
+    finalRun();
 
     return 0;
 
