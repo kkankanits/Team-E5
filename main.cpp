@@ -38,15 +38,18 @@ void waitForStartLight() {
     while(cds.Value() >= 2.0);
 }
 
+/* This function recalculate the distance to counter the differences in motor power */
 float correctDistance(float distance, float power) {
     return distance;
 }
 
+/* This function calculate the rotational counts using the distance */
 int distanceToCount(int distance){
     return (distance*TRANSLATIONS_PER_REV)/(2*M_PI*WHEEL_Radius);
 }
 
-void moveForward(float percent, float distance, float timeout) //using encoders 
+/* This function drive the robot forward specific distance using shaft encoding */
+void moveForward(float percent, float distance, float timeout)
 {
     percent = (BATTERY_FULL / Battery.Voltage()) * percent;
     distance = correctDistance(distance, percent);
@@ -71,11 +74,13 @@ void moveForward(float percent, float distance, float timeout) //using encoders
     leftMotor.Stop();
 }
 
+/* This function drive the robot backward specific distance using shaft encoding */
 void moveBackward(float percent, float distance, float timeout)
 {
     moveForward(-1*percent, distance, timeout);
 }
 
+/* This function turns the robot to the right depending on the rotational count */
 void turnRight(float percent, int counts, float timeout) //using encoders 50, 250 for 90 degree
 {
     percent = (BATTERY_FULL / Battery.Voltage()) * percent;
@@ -98,6 +103,7 @@ void turnRight(float percent, int counts, float timeout) //using encoders 50, 25
 
 }
 
+/* This function turns the robot to the left depending on the rotational count */
 void turnLeft(float percent, int counts, float timeout) //using encoders 50, 250 for 90 degrees
 {
     percent = (BATTERY_FULL / Battery.Voltage()) * percent;
@@ -120,7 +126,7 @@ void turnLeft(float percent, int counts, float timeout) //using encoders 50, 250
 
 }
 
-//true is red, false is blue
+/* This function check if the light is a red light. */
 bool isRedLight() {
     //blue is less than 2, red is less than 1
     //LCD.Write(cds.Value());
@@ -132,18 +138,20 @@ bool isRedLight() {
     }
 }
 
+/* This function set the min and max values for the arm servo motor */
 void setMinMaxArmServo() {
     armServo.SetMin(ARM_SERVO_MIN);
     armServo.SetMax(ARM_SERVO_MAX);
 }
 
+/* This function set the min and max values for the ramp servo motor */
 void setMinMaxRampServo() {
     rampServo.SetMin(RAMP_SERVO_MIN);
     rampServo.SetMax(RAMP_SERVO_MAX);
 }
 
- void checkpoint5()
- {
+/* This function initialize the robot at the start of the run */
+void initializeRobot() {
     //setServoMinAndMax
     setMinMaxArmServo();
     setMinMaxRampServo();
@@ -156,9 +164,10 @@ void setMinMaxRampServo() {
     RCS.InitializeTouchMenu("E5NPDU9yC");
 
     Sleep(.5);
-    //wait for start light
-    waitForStartLight();
+}
 
+/* This function drive the robot to the luggage and drop it */
+void toLuggageAndDrop() {
     //hit the start button
     moveBackward(25, distanceToCount(3.5), 1.3);
 
@@ -189,37 +198,32 @@ void setMinMaxRampServo() {
     //drop luggage 
     rampServo.SetDegree(180);
 
-    Sleep(2.0);
+    Sleep(1.0);
+}
 
+/* This function drive the robot to the passport lever and flip it */
+void toPassportAndFlip() {
     // move forward back to ramp
     moveForward(25, 17, 7);
 
     //turn right 90 degree
     turnRight(50, 245, 2.0);
+}
 
-    //move down the ramp
-    moveForward(45, 11, 10);
+/* This function is the main function which call other functions to perform each task */
+ void runTasks()
+ {
+    //initialize the robot
+    initializeRobot();
 
-    // adjust straight
-    turnRight(50, 15, 5);
+    //wait for start light
+    waitForStartLight();
 
-    //move down the ramp
-    moveForward(25, 11.5, 10);
+    //luggage drop off
+    toLuggageAndDrop();
 
-    // move forward to hit button
-    moveForward(25, 5, 7);
-
-    turnRight(50, 170, 5);
-
-    moveForward(30, 4, 5);
-
-    turnLeft(50, 280, 5);
-
-    moveForward(50, 5, 7);
-
-
-    //move back to complete
-    moveBackward(50, 2, 10);
+    //passport lever task
+    toPassportAndFlip();
 
  }
 
@@ -229,8 +233,8 @@ int main(void)
     // test comment
     LCD.Clear(BLACK);
 
-    //code for checkpoint 3
-    checkpoint5();
+    //start the robot
+    runTasks();
 
     return 0;
 
