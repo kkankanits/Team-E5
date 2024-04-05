@@ -19,7 +19,7 @@
 #define LINE_INTERCEPT 2.1577
 
 //Declaration for CdS cell
-AnalogInputPin cds(FEHIO::P3_7);
+AnalogInputPin cds(FEHIO::P1_0);
 //Declarations for encoders & motors
 DigitalEncoder rightEncoder(FEHIO::P0_0);
 DigitalEncoder leftEncoder(FEHIO::P0_1);
@@ -153,11 +153,11 @@ void setMinMaxRampServo() {
     rampServo.SetDegree(0);
 
     // Initialize the RCS
-    //RCS.InitializeTouchMenu("E5NPDU9yC");
+    RCS.InitializeTouchMenu("E5NPDU9yC");
 
-    //Sleep(.5);
+    Sleep(.5);
     //wait for start light
-    //waitForStartLight();
+    waitForStartLight();
 
     //hit the start button
     moveBackward(25, distanceToCount(3.5), 1.3);
@@ -172,7 +172,7 @@ void setMinMaxRampServo() {
     moveForward(25, 15.5, 5.0);
 
     //move up the ramp
-    moveForward(45, 11, 10);
+    moveForward(45, 10.5, 10);
 
     // adjust the lean right, turn left slightly
     //turnLeft(50, 15, 5);
@@ -184,7 +184,7 @@ void setMinMaxRampServo() {
     turnRight(50, 250, 2.0);
 
     //backward to the passport drop
-    moveBackward(25, 20, 7);
+    moveBackward(25, 18, 7);
 
     //drop luggage 
     rampServo.SetDegree(180);
@@ -192,7 +192,7 @@ void setMinMaxRampServo() {
     Sleep(2.0);
 
     // move forward back to ramp
-    moveForward(25, 18, 7);
+    moveForward(25, 17, 7);
 
     //turn right 90 degree
     turnRight(50, 245, 2.0);
@@ -207,19 +207,20 @@ void setMinMaxRampServo() {
     moveForward(25, 11.5, 10);
 
     // move forward to hit button
-    moveForward(25, 10, 10);
+    moveForward(25, 5, 7);
 
-    // turn right
-    turnRight(50, 230, 5);
+    turnRight(50, 170, 5);
 
-    // forward
-    moveForward(25, 10, 5);
+    moveForward(30, 4, 5);
 
-    // turn left
     turnLeft(50, 280, 5);
 
-    // forward and hit end button
-    moveForward(25, 15, 5);
+    moveForward(50, 5, 7);
+
+
+    //move back to complete
+    moveBackward(50, 2, 10);
+
  }
 
 
