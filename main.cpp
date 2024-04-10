@@ -85,7 +85,7 @@ void moveBackward(float percent, float distance, float timeout)
 }
 
 /* This function turns the robot to the right depending on the rotational count */
-void turnRight(float percent, int counts, float timeout) //using encoders 50, 250 for 90 degree
+void turnRight(float percent, int counts, float timeout) //using encoders 50, 130 for 90 degree
 {
     percent = (BATTERY_FULL / Battery.Voltage()) * percent;
     //Reset encoder counts
@@ -99,7 +99,7 @@ void turnRight(float percent, int counts, float timeout) //using encoders 50, 25
     float start = TimeNow();
 
     //While the average of the left and right encoder is less than counts, keep running motors
-    while(((leftEncoder.Counts() + rightEncoder.Counts()) / 2. < counts) && (TimeNow() - start < timeout));
+    while(((leftEncoder.Counts() + rightEncoder.Counts()) / 2.0 < counts)  && (TimeNow() - start < timeout));
 
     //Turn off motors
     rightMotor.Stop();
@@ -108,7 +108,7 @@ void turnRight(float percent, int counts, float timeout) //using encoders 50, 25
 }
 
 /* This function turns the robot to the left depending on the rotational count */
-void turnLeft(float percent, int counts, float timeout) //using encoders 50, 250 for 90 degrees
+void turnLeft(float percent, int counts, float timeout) //using encoders 50, 105 for 90 degrees
 {
     percent = (BATTERY_FULL / Battery.Voltage()) * percent;
     //Reset encoder counts
@@ -122,7 +122,7 @@ void turnLeft(float percent, int counts, float timeout) //using encoders 50, 250
     float start = TimeNow();
 
     //While the average of the left and right encoder is less than counts, keep running motors
-    while(((leftEncoder.Counts() + rightEncoder.Counts()) / 2. < counts) && (TimeNow() - start < timeout));
+    while(((leftEncoder.Counts() + rightEncoder.Counts()) / 2.0 < counts) && (TimeNow() - start < timeout));
 
     //Turn off motors
     rightMotor.Stop();
@@ -181,129 +181,54 @@ void forwardUntilSwitchPressed(int percent)
         }
 
     }
+    
+    moveForward(percent, 1, 0.8);
     rightMotor.Stop();
     leftMotor.Stop();
 }
 
- void checkpoint5()
- {
-    //setServoMinAndMax
-    setMinMaxArmServo();
-    setMinMaxRampServo();
-
-    //reset servo motor
-    armServo.SetDegree(50);
-    rampServo.SetDegree(0);
-
-    // Initialize the RCS
-    RCS.InitializeTouchMenu("E5NPDU9yC");
-
-    Sleep(.5);
-}
-
-/* This function drive the robot to the luggage and drop it */
-void toLuggageAndDrop() {
-    //hit the start button
-    moveBackward(25, distanceToCount(3.5), 1.3);
-
-    // get out of start light area
-    moveForward(25, 1.8, 5.0);
-
-    //turn right towards big ramp
-    turnRight(50, 100, 2.0);
-
-    //move to the ramp
-    moveForward(25, 15.5, 5.0);
-
-    //move up the ramp
-    moveForward(45, 10.5, 10);
-
-    // adjust the lean right, turn left slightly
-    //turnLeft(50, 15, 5);
-
-    //move up the ramp
-    moveForward(45, 11.5, 10);
-
-    //turn right 90 degree
-    turnRight(50, 250, 2.0);
-
-    //backward to the passport drop
-    moveBackward(25, 18, 7);
-
-    //drop luggage 
-    rampServo.SetDegree(180);
-
-    Sleep(1.0);
-}
-
-/* This function drive the robot to the passport lever and flip it */
-void toPassportAndFlip() {
-    // move forward back to ramp
-    moveForward(25, 17, 7);
-
-    //turn right 90 degree
-    turnRight(50, 245, 2.0);
-
-    //move down the ramp
-    moveForward(45, 11, 10);
-
-    // adjust straight
-    turnRight(50, 15, 5);
-
-    //move down the ramp
-    moveForward(25, 11.5, 10);
-
-    // move forward to hit button
-    moveForward(25, 5, 7);
-
-    turnRight(50, 170, 5);
-
-    moveForward(30, 4, 5);
-
-    turnLeft(50, 280, 5);
-
-    moveForward(50, 5, 7);
-
-
-    //move back to complete
-    moveBackward(50, 2, 10);
-
- }
-
  void taskSuitcase()
  {
     
-
     // get out of start light area
-    moveForward(25, 2.3, 5.0);
+    moveForward(25, 2, 5.0);
 
     //turn right towards big ramp
-    turnRight(50, 115, 2.0);
+    turnRight(50, 65, 3.0);
 
     //move to the ramp
-    moveForward(25, 5, 4);
-    turnRight(50, 50, 2);
-    moveForward(25, 4, 2);
-    turnLeft(50, 50, 2);
-    moveForward(25, 5.5, 2);
+    moveForward(25, 3, 4);
+    turnRight(50, 130, 2);
 
-    //move up the ramp
-    moveForward(45, 10.5, 10);
-
-    // adjust the lean right, turn left slightly
-    turnRight(50, 5, 5);
-
-    //move up the ramp
-    moveForward(45, 13, 10);
-
-    //turn right 90 degree
-    turnRight(50, 250, 2.0);
-
-    //hit wall
     forwardUntilSwitchPressed(25);
 
+    moveBackward(25, 1, 5);
+
+    turnLeft(50, 107, 3);
+
+    //move up the ramp
+    moveForward(30, 3, 10);
+
+    // adjust the lean right, turn left slightly
+    //turnRight(50, 5, 5);
+
+    //move up the ramp
+    moveForward(50, 11.8, 10);
+
+    //turn right 90 degree
+    turnRight(50, 145, 2.0);
+
+    //hit wall
+    forwardUntilSwitchPressed(35);
+
     //backward to the passport drop
-    moveBackward(25, 20, 7);
+    moveBackward(25, 5, 7);
+
+    //align
+    turnRight(50, 5, 3);
+
+    //backward to the passport drop
+    moveBackward(25, 4.8, 7);
 
     //drop luggage 
     rampServo.SetDegree(180);
@@ -311,23 +236,23 @@ void toPassportAndFlip() {
     Sleep(2.0);
 
     // move forward back to ramp
-    forwardUntilSwitchPressed(25);
+    forwardUntilSwitchPressed(35);
  }
 
 //after suitcase
  void taskPassport()
  {
     //move back to align with passport
-    moveBackward(25, 8.3, 5);
+    moveBackward(25, 4.7, 5);
 
     //turn to face passport
-    turnRight(50, 230, 5);
+    turnRight(50, 110, 5);
 
     //move back to flip passport
-    moveBackward(45, 25, 5);
+    moveBackward(45, 12.5, 5);
 
     //move back to flip it back
-    moveForward(30, 15, 5);
+    moveForward(30, 7.5, 5);
  }
 
 
@@ -361,6 +286,9 @@ int main(void)
     LCD.Clear(BLACK);
 
     finalRun();
+
+    //turnRight(50, 130, 5);
+    //turnLeft(50, 105, 5);
 
     return 0;
 
