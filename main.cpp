@@ -154,6 +154,7 @@ void setMinMaxRampServo() {
     rampServo.SetMax(RAMP_SERVO_MAX);
 }
 
+/* This function drives the robot forward until the both of the bump switches are pressed. */
 void forwardUntilSwitchPressed(int percent)
 {
     percent = (BATTERY_FULL / Battery.Voltage()) * percent;
@@ -187,23 +188,43 @@ void forwardUntilSwitchPressed(int percent)
     leftMotor.Stop();
 }
 
+/* This function initialize the robot at the start of the run */
+void initializeRobot() {
+    //setServoMinAndMax
+    setMinMaxArmServo();
+    setMinMaxRampServo();
+
+    //connect to the course
+    RCS.InitializeTouchMenu("E5NPDU9yC");
+
+    Sleep(.5);
+    //wait for start light
+    waitForStartLight();
+    //hit the start button
+    moveBackward(25, distanceToCount(3.5), 1.3);
+}
+
+/* This function drives the robot up the ramp and drop the luggage. */
  void taskSuitcase()
  {
     
-    // get out of start light area
+    //get out of start light area
     moveForward(25, 2, 5.0);
 
     //turn right towards big ramp
     turnRight(50, 65, 3.0);
 
-    //move to the ramp
+    //repositioning the robot after got out of the starting area
     moveForward(25, 3, 4);
     turnRight(50, 130, 2);
 
+    //drives forward into the wall to align the robot
     forwardUntilSwitchPressed(25);
 
+    //moves backward to the ramp
     moveBackward(25, 1, 5);
 
+    //turn left to face the ramp
     turnLeft(50, 107, 3);
 
     //move up the ramp
@@ -212,34 +233,35 @@ void forwardUntilSwitchPressed(int percent)
     // adjust the lean right, turn left slightly
     //turnRight(50, 5, 5);
 
-    //move up the ramp
+    //move up the ramp with higher speed
     moveForward(50, 11.8, 10);
 
-    //turn right 90 degree
+    //turn right 90 degree to face the wall
     turnRight(50, 145, 2.0);
 
     //hit wall
     forwardUntilSwitchPressed(35);
 
-    //backward to the passport drop
+    //backward halfway to the passport drop
     moveBackward(25, 5, 7);
 
-    //align
+    //slight right turn to align
     turnRight(50, 5, 3);
 
-    //backward to the passport drop
+    //backward all the way to the passport drop
     moveBackward(25, 4.8, 7);
 
     //drop luggage 
     rampServo.SetDegree(180);
 
+    //wait to make sure the suitcase is dropped
     Sleep(2.0);
 
-    // move forward back to ramp
+    //move forward back to ramp to hit the wall and reposition
     forwardUntilSwitchPressed(35);
  }
 
-//after suitcase
+/* This function flips the passport lever to stamp the passport. */
  void taskPassport()
  {
     //move back to align with passport
@@ -255,27 +277,57 @@ void forwardUntilSwitchPressed(int percent)
     moveForward(30, 7.5, 5);
  }
 
+/* This function drives to read the boarding pass light and press the button accordingly. */
+ void taskBoardingPass() 
+ {
+    //turn right to the light
+
+    //drive to the light
+
+    //read the light, take the lowest value
+
+    //set distance for red and blue light
+
+    //back up after reading the light (depending on the light?)
+
+    //turn right to face the ticket kiosk
+
+    //forward till the button is pressed
+
+    //press white button?
+
+    //back up from the button
+
+    //drive to the ramp (until hit the wall or distance depends on which color was the light)
+ }
+
+/* This function drives the robot down the ramp, flips the fuel lever, and press the stop button.  */
+ void taskFuelLever() {
+
+    //drives down the ramp
+
+    //drives to the fuel lever
+
+    //flip the fuel lever down
+
+    //back up
+
+    //wait 5 secs
+
+    //flip the fuel lever back up
+
+    //back up
+
+    //turn left to face the stop button
+
+    //run into the stop button
+
+ }
+
 
 void finalRun()
 {
-    //setServoMinAndMax
-    setMinMaxArmServo();
-    setMinMaxRampServo();
-
-    //reset servo motor
-    armServo.SetDegree(50);
-    rampServo.SetDegree(0);
-
-    // Initialize the RCS
-    RCS.InitializeTouchMenu("E5NPDU9yC");
-
-    Sleep(.5);
-    //wait for start light
-    waitForStartLight();
-
-    //hit the start button
-    moveBackward(25, distanceToCount(3.5), 1.3);
-
+    initializeRobot();
     taskSuitcase();
     taskPassport();
 }
