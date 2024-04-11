@@ -135,9 +135,11 @@ bool isRedLight() {
     //blue is less than 2, red is less than 1
     //LCD.Write(cds.Value());
     if(cds.Value() <= 1.15) {
-        return 1;
+        LCD.Write("Red");
+        return 1;       
     }
     else {
+        LCD.Write("Blue");
         return 0;
     }
 }
@@ -209,14 +211,14 @@ void initializeRobot() {
  {
     
     //get out of start light area
-    moveForward(25, 2, 5.0);
+    moveForward(25, 4.2, 5.0);
 
     //turn right towards big ramp
-    turnRight(50, 65, 3.0);
+    turnRight(50, 115, 3.0);
 
     //repositioning the robot after got out of the starting area
-    moveForward(25, 3, 4);
-    turnRight(50, 130, 2);
+    moveForward(25, 6, 4);
+    turnRight(50, 225, 2);
 
     //drives forward into the wall to align the robot
     forwardUntilSwitchPressed(25);
@@ -225,31 +227,31 @@ void initializeRobot() {
     moveBackward(25, 1, 5);
 
     //turn left to face the ramp
-    turnLeft(50, 107, 3);
+    turnLeft(50, 215, 3);
 
     //move up the ramp
-    moveForward(30, 3, 10);
+    moveForward(30, 6, 10);
 
     // adjust the lean right, turn left slightly
     //turnRight(50, 5, 5);
 
     //move up the ramp with higher speed
-    moveForward(50, 11.8, 10);
+    moveForward(50, 22, 10);
 
     //turn right 90 degree to face the wall
-    turnRight(50, 145, 2.0);
+    turnRight(50, 235, 2.0);
 
     //hit wall
     forwardUntilSwitchPressed(35);
 
     //backward halfway to the passport drop
-    moveBackward(25, 5, 7);
+    moveBackward(25, 10, 7);
 
     //slight right turn to align
-    turnRight(50, 5, 3);
+    turnRight(50, 8, 3);
 
     //backward all the way to the passport drop
-    moveBackward(25, 4.8, 7);
+    moveBackward(25, 9.5, 7);
 
     //drop luggage 
     rampServo.SetDegree(180);
@@ -258,69 +260,178 @@ void initializeRobot() {
     Sleep(2.0);
 
     //move forward back to ramp to hit the wall and reposition
-    forwardUntilSwitchPressed(35);
+    //forwardUntilSwitchPressed(35);
  }
 
 /* This function flips the passport lever to stamp the passport. */
  void taskPassport()
  {
     //move back to align with passport
-    moveBackward(25, 4.7, 5);
+    moveBackward(25, 7, 5);
 
     //turn to face passport
-    turnRight(50, 110, 5);
+    turnRight(50, 200, 5);
 
     //move back to flip passport
-    moveBackward(45, 12.5, 5);
+    moveBackward(45, 28, 5);
 
     //move back to flip it back
-    moveForward(30, 7.5, 5);
+    moveForward(30, 18, 5);
+
+    //turn left to face wall
+    turnLeft(50, 215, 3);
+
+    forwardUntilSwitchPressed(35);
+
+    //then call fuel  lever
  }
 
 /* This function drives to read the boarding pass light and press the button accordingly. */
  void taskBoardingPass() 
  {
-    //turn right to the light
+    //left 180
+    turnLeft(50, 445, 6);
 
-    //drive to the light
+    forwardUntilSwitchPressed(35);
 
-    //read the light, take the lowest value
+    //back up
+    moveBackward(25, 16, 3);
 
-    //set distance for red and blue light
+    //turn right 90
+    turnRight(50, 150, 3);
 
-    //back up after reading the light (depending on the light?)
+    //forward to read light
+    //moveForward(25, 15, 5);
 
-    //turn right to face the ticket kiosk
+    forwardUntilSwitchPressed(35);
 
-    //forward till the button is pressed
+    //back to read light
+    moveBackward(25, 2, 2);
 
-    //press white button?
+    Sleep(0.5);
 
-    //back up from the button
+    //read light
+    bool red = isRedLight();
 
-    //drive to the ramp (until hit the wall or distance depends on which color was the light)
+    //back after reading light
+    moveBackward(25, 4.5, 2);
+
+    //turn to align with button
+    turnRight(50, 380, 3);
+
+    if(red)
+    {
+        //hitred
+        moveForward(25, 8, 5);
+    }
+    else
+    {
+        //hut blue
+        moveForward(25, 4, 5);
+    }
+
+    //turn towards button
+    turnLeft(50, 215, 4);
+    //hit button
+    forwardUntilSwitchPressed(35);
+
+    //move out
+    moveBackward(30, 16, 5);
+
+    //right 90
+    turnRight(50, 210, 3);
+
+    //move until bump switch pressed
+    forwardUntilSwitchPressed(35);
+
+    //passport
+
  }
 
 /* This function drives the robot down the ramp, flips the fuel lever, and press the stop button.  */
  void taskFuelLever() {
 
-    //drives down the ramp
+    //set servo motor min and mac
+    setMinMaxArmServo();
 
-    //drives to the fuel lever
+    //reset servo motor
+    armServo.SetDegree(30);
 
-    //flip the fuel lever down
+    //back up before going down ranp
+    moveBackward(25, 2, 2);
 
-    //back up
+    //turn towards ramp
+    turnRight(25, 215, 3);
 
-    //wait 5 secs
+    //drive down
+    moveForward(25, 28, 10);
 
-    //flip the fuel lever back up
+    //turn toards wall
+    turnLeft(50, 210, 4);
 
-    //back up
+    //hit bump
+    forwardUntilSwitchPressed(35);
+    
+    //turn so that arm is towards levers
+    turnRight(50, 430, 4);
 
-    //turn left to face the stop button
+    // Get correct lever from the RCS
+    int correctLever = 0;
+    //int correctLever = RCS.GetCorrectLever();
+    LCD.Write(correctLever);
+    //A = 4.5
+    float distanceToLever;
+     
+    // Check which lever to flip and perform some action
+    if(correctLever == 0)
+    {
+        // Perform actions to flip left lever
+        distanceToLever = 4.5;
+    } 
+    else if(correctLever == 1)
+    {
+        // Perform actions to flip middle lever
+        distanceToLever = 7.5;
+    }
+    else if(correctLever == 2)
+    {
+       // Perform actions to flip right lever
+       distanceToLever = 9;
+    }
 
-    //run into the stop button
+    // move to the fuel lever
+    moveForward(25, distanceToCount(distanceToLever), 8.);
+
+    // turn left facing the fuel switches
+    turnLeft(50, 200, 3.);
+
+    // back up a little to give space
+    moveBackward(25, distanceToCount(3.8), 3.);
+
+    float start = TimeNow();
+    //timeout if servo doesnt move
+    while(TimeNow() - start < 2.0) {
+        //flip the lever down
+        armServo.SetDegree(143);
+    }
+    
+    //reverse backward 
+    moveBackward(25, distanceToCount(3), 3.);
+
+    //sleep for 5 sec
+    Sleep(7.0);
+
+    //move the servo down a bit
+    armServo.SetDegree(160);
+
+    //move up to the lever
+    moveForward(25, distanceToCount(3), 3.);
+
+    //lift the lever back up
+    armServo.SetDegree(140);
+
+    // move up a little to give space
+    moveBackward(25, distanceToCount(3), 3.);
 
  }
 
@@ -329,6 +440,7 @@ void finalRun()
 {
     initializeRobot();
     taskSuitcase();
+    taskBoardingPass();
     taskPassport();
 }
 
@@ -339,8 +451,8 @@ int main(void)
 
     finalRun();
 
-    //turnRight(50, 130, 5);
-    //turnLeft(50, 105, 5);
+    //turnRight(50, 235, 5);
+    //turnLeft(50, 230, 5);
 
     return 0;
 
