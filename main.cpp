@@ -442,6 +442,7 @@ void finalRun()
     taskSuitcase();
     taskBoardingPass();
     taskPassport();
+    taskFuelLever();
 }
 
 int main(void)
