@@ -282,7 +282,7 @@ void initializeRobot() {
     forwardUntilSwitchPressed(35);
 
     //back up
-    moveBackward(25, 18.3, 3);
+    moveBackward(25, 22, 3);
 
     //turn right to the light
     turnRight(50, 130, 3);
@@ -324,7 +324,7 @@ void initializeRobot() {
     }
 
     //turn towards button
-    turnLeft(50, 215, 4);
+    turnLeft(50, 220, 4);
 
     //hit button
     //moveForward(30, 5.5, 3);
@@ -335,6 +335,8 @@ void initializeRobot() {
         }
     //forwardUntilSwitchPressed(35);
 
+    //make sure it hit button
+    moveForward(25, 1, 5);
     //move out
     moveBackward(30, 16, 5);
 
@@ -352,10 +354,10 @@ void initializeRobot() {
  void taskPassport()
  {
     //move back to align with passport
-    moveBackward(25, 6.6, 5);
+    moveBackward(25, 6.9, 5);
 
     //turn to face passport
-    turnRight(50, 210, 5);
+    turnRight(50, 217, 5);
 
     //move back to flip passport
     moveBackward(30, 14, 5);
@@ -364,23 +366,24 @@ void initializeRobot() {
 
     //move back to flip passport
     moveBackward(30, 7, 5);
+    moveForward(30, 11, 5);
 
     //Sleep(.3);
 
     //move back to flip passport
-    moveBackward(30, 5, 5);
+    //moveBackward(30, 5, 5);
 
     //Sleep(.3);
 
     //move back to flip it back
-    moveForward(30, 18, 5);
+    //moveForward(30, 18, 5);
 
     //turn left to face wall
     turnLeft(50, 215, 3);
 
     forwardUntilSwitchPressed(35);
 
-    //then call fuel  lever
+    //then skip fuel lever
  }
  
 /* This function drives the robot down the ramp, flips the fuel lever, and press the stop button.  */
@@ -394,7 +397,7 @@ void initializeRobot() {
     turnRight(25, 240, 3);
 
     //drive down
-    moveForward(25, 25.5, 10);
+    moveForward(25, 26, 10);
 
     //turn toards wall
     turnLeft(50, 210, 4);
@@ -422,7 +425,7 @@ void initializeRobot() {
     if(correctLever == 0)
     {
         // Perform actions to flip left lever
-        distanceToLever = 10;
+        distanceToLever = 13;
     } 
     else if(correctLever == 1)
     {
@@ -467,14 +470,20 @@ void initializeRobot() {
     armServo.SetDegree(140);
 
     // move up a little to give space
-    moveBackward(25, 5, 3.);
+    moveBackward(25, 3.8, 3.);
 
  }
 
  void hitStopButton()
  {
-    turnLeft(50, 240, 5);
-    moveForward(25, 30, 10);
+    turnLeft(50, 65, 5);
+    moveForward(25, 4, 10);
+    turnLeft(50, 65, 5);
+    moveForward(25, 40, 10);
+    moveBackward(25, 2, 3.);
+    turnRight(50, 20, 5);
+    moveForward(25, 3, 3.);
+    moveBackward(25, 2, 3.);
  }
 
 
@@ -484,8 +493,8 @@ void finalRun()
     taskSuitcase();
     taskBoardingPass();
     taskPassport();
-    taskFuelLever();
-    hitStopButton();
+    //taskFuelLever();
+    //hitStopButton();
 }
 
 int main(void)
