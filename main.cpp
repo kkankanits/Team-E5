@@ -282,7 +282,7 @@ void initializeRobot() {
     forwardUntilSwitchPressed(35);
 
     //back up
-    moveBackward(25, 18, 10);
+    moveBackward(25, 19.5, 10);
 
     //turn right to the light
     turnRight(50, 130, 3);
@@ -309,7 +309,7 @@ void initializeRobot() {
     if(red)
     {
         //hit red
-        moveForward(25, 5, 5);
+        moveForward(25, 6, 5);
 
     }
     else
