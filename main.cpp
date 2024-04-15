@@ -282,7 +282,7 @@ void initializeRobot() {
     forwardUntilSwitchPressed(35);
 
     //back up
-    moveBackward(25, 22, 3);
+    moveBackward(25, 18, 10);
 
     //turn right to the light
     turnRight(50, 130, 3);
@@ -301,7 +301,7 @@ void initializeRobot() {
     bool red = isRedLight();
 
     //back after reading light
-    moveBackward(25, 4.7, 2);
+    moveBackward(25, 5, 2);
 
     //turn to align with button
     turnRight(50, 380, 3);
@@ -309,12 +309,8 @@ void initializeRobot() {
     if(red)
     {
         //hit red
-        moveForward(25, 8, 5);
+        moveForward(25, 5, 5);
 
-        //press white button
-        armServo.SetDegree(95);
-        Sleep(.5);
-        armServo.SetDegree(30);
     }
     else
     {
@@ -337,6 +333,23 @@ void initializeRobot() {
 
     //make sure it hit button
     moveForward(25, 1, 5);
+
+    
+
+    if(!red)
+    {
+        //code to hit white button
+        moveBackward(30, 4, 5);
+        turnLeft(50, 220, 4);
+        moveForward(25, 3.8, 5);
+
+    }
+
+    //press white button
+    armServo.SetDegree(95);
+    Sleep(.5);
+    armServo.SetDegree(30);
+
     //move out
     moveBackward(30, 16, 5);
 
@@ -354,7 +367,7 @@ void initializeRobot() {
  void taskPassport()
  {
     //move back to align with passport
-    moveBackward(25, 6.9, 5);
+    moveBackward(25, 7.2, 10);
 
     //turn to face passport
     turnRight(50, 217, 5);
