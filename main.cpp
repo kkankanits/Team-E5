@@ -248,7 +248,7 @@ void initializeRobot() {
     moveForward(50, 22, 10);
 
     //turn right 90 degree to face the wall
-    turnRight(50, 235, 2.0);
+    turnRight(50, 240, 2.0);
 
     //hit wall
     forwardUntilSwitchPressed(35);
@@ -257,7 +257,7 @@ void initializeRobot() {
     moveBackward(25, 10, 7);
 
     //slight right turn to align
-    turnRight(50, 8, 3);
+    turnRight(50, 10, 3);
 
     //backward all the way to the passport drop
     moveBackward(25, 9.5, 7);
@@ -268,6 +268,9 @@ void initializeRobot() {
     //wait to make sure the suitcase is dropped
     Sleep(2.0);
 
+    //move ramp back
+    rampServo.SetDegree(100);
+
     //move forward back to ramp to hit the wall and reposition
     //forwardUntilSwitchPressed(35);
  }
@@ -276,13 +279,13 @@ void initializeRobot() {
  void taskBoardingPass() 
  {
     //left 180
-    turnLeft(50, 445, 6);
+    turnLeft(50, 450, 6);
 
     //hit the wall
     forwardUntilSwitchPressed(35);
 
     //back up
-    moveBackward(25, 19.5, 10);
+    moveBackward(25, 20.8, 10);
 
     //turn right to the light
     turnRight(50, 130, 3);
@@ -293,7 +296,7 @@ void initializeRobot() {
     forwardUntilSwitchPressed(35);
 
     //back to read light
-    moveBackward(25, 2.2, 2);
+    moveBackward(25, 3.2, 2);
 
     Sleep(3.);
 
@@ -301,21 +304,20 @@ void initializeRobot() {
     bool red = isRedLight();
 
     //back after reading light
-    moveBackward(25, 5, 2);
+    moveBackward(25, 4.6, 2);
 
     //turn to align with button
     turnRight(50, 380, 3);
 
     if(red)
     {
-        //hit red
-        moveForward(25, 6, 5);
-
+        //go to red
+        moveForward(25, 6, 4.);
     }
     else
     {
-        //hit blue
-        moveForward(25, 1.2, 5);
+        //go to blue
+        moveForward(25, 2, 4.);
         
     }
 
@@ -323,16 +325,10 @@ void initializeRobot() {
     turnLeft(50, 220, 4);
 
     //hit button
-    //moveForward(30, 5.5, 3);
-
-    // move forward until the right switch is pressing button
-        while (rightBumpSwitch.Value()) {
-            moveForward(25, 1, 0.5);
-        }
-    //forwardUntilSwitchPressed(35);
+    forwardUntilSwitchPressed(35);
 
     //make sure it hit button
-    moveForward(25, 1, 5);
+    moveForward(25, 1, 2.);
 
     
 
@@ -340,9 +336,19 @@ void initializeRobot() {
     {
         //code to hit white button
         moveBackward(30, 4, 5);
+        //right to the white
+        turnRight(50, 220, 4);
+        //forward a bit
+        moveForward(25, 5, 4.);
+        //left to face white button
         turnLeft(50, 220, 4);
-        moveForward(25, 3.8, 5);
+        //forward to white button
+        moveForward(25, 1, 5);
 
+    }
+    else {
+        //press white button
+        moveBackward(25, 3.5, 2.);
     }
 
     //press white button
@@ -359,40 +365,49 @@ void initializeRobot() {
     //move until bump switch pressed
     forwardUntilSwitchPressed(35);
 
-    //passport
-
  }
 
 /* This function flips the passport lever to stamp the passport. */
  void taskPassport()
  {
     //move back to align with passport
-    moveBackward(25, 7.2, 10);
+    moveBackward(25, 1.8, 10);
 
     //turn to face passport
-    turnRight(50, 217, 5);
+    turnLeft(50, 217, 5);
 
     //move back to flip passport
-    moveBackward(30, 14, 5);
+    moveBackward(25, 5, 5);
 
-    //Sleep(.3);
+    //move the arm down
+    armServo.SetDegree(170);
 
-    //move back to flip passport
-    moveBackward(30, 7, 5);
-    moveForward(30, 11, 5);
 
-    //Sleep(.3);
+    //move forward to flip passport
+    moveForward(25, 4.3, 5);
 
-    //move back to flip passport
-    //moveBackward(30, 5, 5);
+    //move the arm up
+    armServo.SetDegree(100);
 
-    //Sleep(.3);
+    //Sleep(1.0);
 
-    //move back to flip it back
-    //moveForward(30, 18, 5);
+    //move forward to flip passport
+    moveForward(25, 4, 5);
+
+    //move the arm up
+    armServo.SetDegree(80);
+
+    //move forward to flip passport
+    moveForward(25, 4, 5);
+
+    //move backward away from passport
+    moveBackward(25, 8, 5);
+
+    //move the arm up
+    armServo.SetDegree(30);
 
     //turn left to face wall
-    turnLeft(50, 215, 3);
+    turnRight(50, 215, 3);
 
     forwardUntilSwitchPressed(35);
 
@@ -410,7 +425,7 @@ void initializeRobot() {
     turnRight(25, 240, 3);
 
     //drive down
-    moveForward(25, 26, 10);
+    moveForward(25, 19.5, 10);
 
     //turn toards wall
     turnLeft(50, 210, 4);
@@ -422,10 +437,10 @@ void initializeRobot() {
     moveBackward(25, 2, 2);
     
     //turn 180 towards the fuel lever
-    turnRight(50, 475, 4);
+    turnRight(50, 490, 4);
 
     //reset servo motor
-    armServo.SetDegree(50);
+    armServo.SetDegree(40);
 
     // Get correct lever from the RCS
     int correctLever = 0;
@@ -438,7 +453,7 @@ void initializeRobot() {
     if(correctLever == 0)
     {
         // Perform actions to flip left lever
-        distanceToLever = 13;
+        distanceToLever = 16.3;
     } 
     else if(correctLever == 1)
     {
@@ -455,10 +470,10 @@ void initializeRobot() {
     moveForward(25, distanceToLever, 8.);
 
     // turn left facing the fuel switches
-    turnLeft(50, 200, 3.);
+    turnLeft(50, 217, 3.);
 
     // back up a little to give space
-    moveBackward(25, 4.1, 3.);
+    moveBackward(25, 5.5, 3.);
 
     float start = TimeNow();
     //timeout if servo doesnt move
@@ -468,7 +483,7 @@ void initializeRobot() {
     }
     
     //reverse backward 
-    moveBackward(25, 5, 3.);
+    moveBackward(25, 2.5, 3.);
 
     //sleep for 5 sec
     Sleep(7.0);
@@ -477,13 +492,16 @@ void initializeRobot() {
     armServo.SetDegree(160);
 
     //move up to the lever
-    moveForward(25, 5, 3.);
+    moveForward(25, 3.5, 3.);
 
     //lift the lever back up
-    armServo.SetDegree(140);
+    armServo.SetDegree(120);
 
     // move up a little to give space
     moveBackward(25, 3.8, 3.);
+
+    //move arm back up
+    armServo.SetDegree(40);
 
  }
 
@@ -506,8 +524,8 @@ void finalRun()
     taskSuitcase();
     taskBoardingPass();
     taskPassport();
-    //taskFuelLever();
-    //hitStopButton();
+    taskFuelLever();
+    hitStopButton();
 }
 
 int main(void)
