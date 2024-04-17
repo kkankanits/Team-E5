@@ -12,7 +12,7 @@
 #define TRANSLATIONS_PER_REV 318.0
 #define BATTERY_FULL 11.5
 #define ARM_SERVO_MIN 500
-#define ARM_SERVO_MAX 2270
+#define ARM_SERVO_MAX 1881
 #define RAMP_SERVO_MIN 581
 #define RAMP_SERVO_MAX 2301
 #define LINE_SLOPE -0.0405
@@ -241,14 +241,22 @@ void initializeRobot() {
     //move up the ramp
     moveForward(30, 6, 10);
 
-    // adjust the lean right, turn left slightly
-    //turnRight(50, 5, 5);
+    if(RCS.CurrentRegionLetter() == 'A' || RCS.CurrentRegionLetter() == 'B' ) {
+        moveForward(50, 10, 10);
+        // adjust the lean right, turn left slightly
+        turnRight(50, 5, 5);
+        moveForward(50, 12, 10);
+    }
+    else {
+        //move up the ramp with higher speed
+        moveForward(50, 22, 10);
+    }
 
-    //move up the ramp with higher speed
-    moveForward(50, 22, 10);
+
+    
 
     //turn right 90 degree to face the wall
-    turnRight(50, 240, 2.0);
+    turnRight(50, 245, 2.0);
 
     //hit wall
     forwardUntilSwitchPressed(35);
@@ -288,7 +296,7 @@ void initializeRobot() {
     moveBackward(25, 20.8, 10);
 
     //turn right to the light
-    turnRight(50, 130, 3);
+    turnRight(50, 125, 3);
 
     //forward to read light
     //moveForward(25, 15, 5);
@@ -343,24 +351,27 @@ void initializeRobot() {
         //left to face white button
         turnLeft(50, 220, 4);
         //forward to white button
-        moveForward(25, 1, 5);
+        moveForward(25, .9, 5);
 
     }
     else {
         //press white button
-        moveBackward(25, 3.5, 2.);
+        moveBackward(25, 3.9, 2.);
     }
 
     //press white button
-    armServo.SetDegree(95);
+    armServo.SetDegree(105);
     Sleep(.5);
     armServo.SetDegree(30);
 
     //move out
-    moveBackward(30, 16, 5);
+    moveBackward(30, 15.9, 5);
+    if(red) {
+        moveBackward(25, 1, 5);
+    }
 
     //right 90
-    turnRight(50, 210, 3);
+    turnRight(50, 220, 3);
 
     //move until bump switch pressed
     forwardUntilSwitchPressed(35);
@@ -371,7 +382,7 @@ void initializeRobot() {
  void taskPassport()
  {
     //move back to align with passport
-    moveBackward(25, 1.8, 10);
+    moveBackward(25, 1.95, 10);
 
     //turn to face passport
     turnLeft(50, 217, 5);
@@ -380,25 +391,29 @@ void initializeRobot() {
     moveBackward(25, 5, 5);
 
     //move the arm down
-    armServo.SetDegree(170);
+    armServo.SetDegree(180);
 
 
     //move forward to flip passport
     moveForward(25, 4.3, 5);
 
     //move the arm up
-    armServo.SetDegree(100);
+    armServo.SetDegree(110);
 
     //Sleep(1.0);
 
     //move forward to flip passport
-    moveForward(25, 4, 5);
+    moveForward(30, 4, 3);
 
     //move the arm up
-    armServo.SetDegree(80);
+    armServo.SetDegree(90);
 
     //move forward to flip passport
-    moveForward(25, 4, 5);
+    moveForward(30, 3, 3);
+
+    //mov arm back
+    //move the arm up
+    armServo.SetDegree(130);
 
     //move backward away from passport
     moveBackward(25, 8, 5);
@@ -443,27 +458,31 @@ void initializeRobot() {
     armServo.SetDegree(40);
 
     // Get correct lever from the RCS
-    int correctLever = 0;
-    //int correctLever = RCS.GetCorrectLever();
+    //int correctLever = 2;
+    int correctLever = RCS.GetCorrectLever();
     LCD.Write(correctLever);
     //A = 4.5
     float distanceToLever;
+    float backwardDistance;
      
     // Check which lever to flip and perform some action
     if(correctLever == 0)
     {
         // Perform actions to flip left lever
-        distanceToLever = 16.3;
+        distanceToLever = 16.8;
+        backwardDistance = 5.5;
     } 
     else if(correctLever == 1)
     {
         // Perform actions to flip middle lever
-        distanceToLever = 7.5;
+        distanceToLever = 20;
+        backwardDistance = 5;
     }
     else if(correctLever == 2)
     {
        // Perform actions to flip right lever
-       distanceToLever = 9;
+       distanceToLever = 23;
+       backwardDistance = 5;
     }
 
     // move to the fuel lever
@@ -473,13 +492,13 @@ void initializeRobot() {
     turnLeft(50, 217, 3.);
 
     // back up a little to give space
-    moveBackward(25, 5.5, 3.);
+    moveBackward(25, backwardDistance, 3.);
 
     float start = TimeNow();
     //timeout if servo doesnt move
     while(TimeNow() - start < 1.0) {
         //flip the lever down
-        armServo.SetDegree(143);
+        armServo.SetDegree(150);
     }
     
     //reverse backward 
@@ -489,13 +508,13 @@ void initializeRobot() {
     Sleep(7.0);
 
     //move the servo down a bit
-    armServo.SetDegree(160);
+    armServo.SetDegree(170);
 
     //move up to the lever
-    moveForward(25, 3.5, 3.);
+    moveForward(25, 3.8, 3.);
 
     //lift the lever back up
-    armServo.SetDegree(120);
+    armServo.SetDegree(105);
 
     // move up a little to give space
     moveBackward(25, 3.8, 3.);
@@ -503,14 +522,20 @@ void initializeRobot() {
     //move arm back up
     armServo.SetDegree(40);
 
+    //turn left 90 degree
+    turnLeft(50, 217, 3.);
+
+    //move forward however much move forward
+    moveForward(25, distanceToLever-6, 10);
+
  }
 
  void hitStopButton()
  {
-    turnLeft(50, 65, 5);
-    moveForward(25, 4, 10);
-    turnLeft(50, 65, 5);
-    moveForward(25, 40, 10);
+    //turnLeft(50, 65, 5);
+    //moveForward(25, 4, 10);
+    turnRight(50, 65, 5);
+    moveForward(40, 40, 10);
     moveBackward(25, 2, 3.);
     turnRight(50, 20, 5);
     moveForward(25, 3, 3.);
@@ -532,6 +557,8 @@ int main(void)
 {
     // test comment
     LCD.Clear(BLACK);
+
+    //armServo.TouchCalibrate();
 
     finalRun();
 
