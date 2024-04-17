@@ -218,6 +218,8 @@ void initializeRobot() {
 /* This function drives the robot up the ramp and drop the luggage. */
  void taskSuitcase()
  {
+    LCD.Write(RCS.CurrentRegion());
+    int course = RCS.CurrentRegion();
     
     //get out of start light area
     moveForward(25, 4.2, 5.0);
@@ -241,10 +243,22 @@ void initializeRobot() {
     //move up the ramp
     moveForward(30, 6, 10);
 
-    if(RCS.CurrentRegionLetter() == 'A' || RCS.CurrentRegionLetter() == 'B' ) {
+    if(course == 0) {
         moveForward(50, 10, 10);
         // adjust the lean right, turn left slightly
-        turnRight(50, 5, 5);
+        turnRight(50, 20, 5);
+        moveForward(50, 12, 10);
+    }
+    else if(course == 1) {
+        moveForward(50, 10, 10);
+        // adjust the lean right, turn left slightly
+        turnRight(50, 15, 5);
+        moveForward(50, 12, 10);
+    }
+    else if(course == 2) {
+        moveForward(50, 10, 10);
+        // adjust the lean right, turn left slightly
+        turnLeft(50, 15, 5);
         moveForward(50, 12, 10);
     }
     else {
@@ -253,7 +267,6 @@ void initializeRobot() {
     }
 
 
-    
 
     //turn right 90 degree to face the wall
     turnRight(50, 245, 2.0);
@@ -265,7 +278,7 @@ void initializeRobot() {
     moveBackward(25, 10, 7);
 
     //slight right turn to align
-    turnRight(50, 10, 3);
+    turnRight(50, 15, 3);
 
     //backward all the way to the passport drop
     moveBackward(25, 9.5, 7);
@@ -287,7 +300,7 @@ void initializeRobot() {
  void taskBoardingPass() 
  {
     //left 180
-    turnLeft(50, 450, 6);
+    turnLeft(50, 455, 6);
 
     //hit the wall
     forwardUntilSwitchPressed(35);
@@ -356,7 +369,7 @@ void initializeRobot() {
     }
     else {
         //press white button
-        moveBackward(25, 3.9, 2.);
+        moveBackward(25, 4.1, 2.);
     }
 
     //press white button
@@ -406,10 +419,10 @@ void initializeRobot() {
     moveForward(30, 4, 3);
 
     //move the arm up
-    armServo.SetDegree(90);
+    armServo.SetDegree(95);
 
     //move forward to flip passport
-    moveForward(30, 3, 3);
+    moveForward(30, 3.4, 3);
 
     //mov arm back
     //move the arm up
@@ -470,7 +483,7 @@ void initializeRobot() {
     {
         // Perform actions to flip left lever
         distanceToLever = 16.8;
-        backwardDistance = 5.5;
+        backwardDistance = 5;
     } 
     else if(correctLever == 1)
     {
@@ -482,7 +495,7 @@ void initializeRobot() {
     {
        // Perform actions to flip right lever
        distanceToLever = 23;
-       backwardDistance = 5;
+       backwardDistance = 4.5;
     }
 
     // move to the fuel lever
@@ -526,7 +539,13 @@ void initializeRobot() {
     turnLeft(50, 217, 3.);
 
     //move forward however much move forward
-    moveForward(25, distanceToLever-6, 10);
+    if(correctLever == 0) {
+        moveForward(25, 4.8, 10);
+    }
+    else {
+        moveForward(25, distanceToLever-6, 10);
+    }
+    
 
  }
 
@@ -534,7 +553,7 @@ void initializeRobot() {
  {
     //turnLeft(50, 65, 5);
     //moveForward(25, 4, 10);
-    turnRight(50, 65, 5);
+    turnRight(50, 70, 5);
     moveForward(40, 40, 10);
     moveBackward(25, 2, 3.);
     turnRight(50, 20, 5);
