@@ -243,10 +243,10 @@ void initializeRobot() {
     //move up the ramp
     moveForward(30, 6, 10);
 
-    if(course == 0) {
+    if(course == 0) { 
         moveForward(50, 10, 10);
         // adjust the lean right, turn left slightly
-        turnRight(50, 20, 5);
+        turnRight(50, 15, 5);
         moveForward(50, 12, 10);
     }
     else if(course == 1) {
@@ -258,7 +258,7 @@ void initializeRobot() {
     else if(course == 2) {
         moveForward(50, 10, 10);
         // adjust the lean right, turn left slightly
-        turnLeft(50, 15, 5);
+        //turnLeft(50, 15, 5);
         moveForward(50, 12, 10);
     }
     else {
@@ -305,8 +305,15 @@ void initializeRobot() {
     //hit the wall
     forwardUntilSwitchPressed(35);
 
+    int backDis = 20.8;
+
+    //if it is course A, back up less
+    if(RCS.CurrentRegion() == 0)
+    {
+        backDis = 20.5;
+    }
     //back up
-    moveBackward(25, 20.8, 10);
+    moveBackward(25, backDis, 10);
 
     //turn right to the light
     turnRight(50, 125, 3);
@@ -338,7 +345,7 @@ void initializeRobot() {
     else
     {
         //go to blue
-        moveForward(25, 2, 4.);
+        moveForward(25, 1.9, 4.0);
         
     }
 
@@ -356,31 +363,31 @@ void initializeRobot() {
     if(!red)
     {
         //code to hit white button
-        moveBackward(30, 4, 5);
+        moveBackward(30, 4.1, 5);
         //right to the white
         turnRight(50, 220, 4);
         //forward a bit
-        moveForward(25, 5, 4.);
+        moveForward(25, 4.7, 4.);
         //left to face white button
         turnLeft(50, 220, 4);
         //forward to white button
-        moveForward(25, .9, 5);
+        moveForward(25, .8, 5);
 
     }
     else {
         //press white button
-        moveBackward(25, 4.1, 2.);
+        moveBackward(25, 3.9, 2.0);
     }
 
     //press white button
-    armServo.SetDegree(105);
+    armServo.SetDegree(125);
     Sleep(.5);
     armServo.SetDegree(30);
 
     //move out
     moveBackward(30, 15.9, 5);
     if(red) {
-        moveBackward(25, 1, 5);
+        moveBackward(25, 1.1, 5);
     }
 
     //right 90
@@ -419,17 +426,34 @@ void initializeRobot() {
     moveForward(30, 4, 3);
 
     //move the arm up
-    armServo.SetDegree(95);
+    armServo.SetDegree(100);
 
     //move forward to flip passport
-    moveForward(30, 3.4, 3);
+    moveForward(30, 4, 3);
+
+    //start of code to flip it back down
+    moveBackward(30, 2, 4);
+
+    //arm down
+    armServo.SetDegree(150);
+
+    //move forward to rotate lever down
+    moveForward(30, 2, 5);
+
+    armServo.SetDegree(90);
+
+    moveBackward(30, 1, 4);
+
+    Sleep(2.0);
+
+    //end of code to bring arm down
 
     //mov arm back
-    //move the arm up
-    armServo.SetDegree(130);
+    //move the arm down
+    armServo.SetDegree(180);
 
     //move backward away from passport
-    moveBackward(25, 8, 5);
+    moveBackward(25, 7, 5);
 
     //move the arm up
     armServo.SetDegree(30);
@@ -483,18 +507,18 @@ void initializeRobot() {
     {
         // Perform actions to flip left lever
         distanceToLever = 16.8;
-        backwardDistance = 5;
+        backwardDistance = 4.5;
     } 
     else if(correctLever == 1)
     {
         // Perform actions to flip middle lever
         distanceToLever = 20;
-        backwardDistance = 5;
+        backwardDistance = 4.7;
     }
     else if(correctLever == 2)
     {
        // Perform actions to flip right lever
-       distanceToLever = 23;
+       distanceToLever = 23.5;
        backwardDistance = 4.5;
     }
 
@@ -543,7 +567,7 @@ void initializeRobot() {
         moveForward(25, 4.8, 10);
     }
     else {
-        moveForward(25, distanceToLever-6, 10);
+        moveForward(25, distanceToLever-6.5, 10);
     }
     
 
