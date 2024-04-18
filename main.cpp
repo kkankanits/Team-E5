@@ -326,7 +326,7 @@ void initializeRobot() {
     //back to read light
     moveBackward(25, 3.2, 2);
 
-    Sleep(3.);
+    Sleep(3.0);
 
     //read light
     bool red = isRedLight();
