@@ -134,7 +134,7 @@ void turnLeft(float percent, int counts, float timeout) //using encoders 50, 105
 bool isRedLight() {
     //blue is less than 2, red is less than 1
     //LCD.Write(cds.Value());
-    if(cds.Value() <= 1.15) {
+    if(cds.Value() <= 1.11) {
         //LCD.Write("Red");
         LCD.Clear(RED);
         LCD.SetFontColor(BLACK);
@@ -244,16 +244,18 @@ void initializeRobot() {
     moveForward(30, 6, 10);
 
     if(course == 0) { 
-        moveForward(50, 10, 10);
-        // adjust the lean right, turn left slightly
-        turnRight(50, 15, 5);
-        moveForward(50, 12, 10);
+        //A
+        moveForward(50, 8, 10);
+        // adjust the lean left, turn right slightly
+        turnRight(50, 10, 5);
+        moveForward(50, 14, 10);
     }
     else if(course == 1) {
-        moveForward(50, 10, 10);
-        // adjust the lean right, turn left slightly
-        turnRight(50, 15, 5);
-        moveForward(50, 12, 10);
+        //B
+        moveForward(50, 8, 10);
+        // adjust the lean left, turn right slightly
+        turnRight(50, 10, 5);
+        moveForward(50, 14, 10);
     }
     else if(course == 2) {
         moveForward(50, 10, 10);
@@ -262,14 +264,16 @@ void initializeRobot() {
         moveForward(50, 12, 10);
     }
     else {
-        //move up the ramp with higher speed
-        moveForward(50, 22, 10);
+        moveForward(50, 9, 10);
+        // adjust the lean right, turn left slightly
+        turnLeft(50, 15, 5);
+        moveForward(50, 13, 10);
     }
 
 
 
     //turn right 90 degree to face the wall
-    turnRight(50, 245, 2.0);
+    turnRight(50, 258, 2.0);
 
     //hit wall
     forwardUntilSwitchPressed(35);
@@ -310,13 +314,23 @@ void initializeRobot() {
     //if it is course A, back up less
     if(RCS.CurrentRegion() == 0)
     {
-        backDis = 20.5;
+        backDis = 20.8;
     }
+
+    if(RCS.CurrentRegion() == 1)
+    {
     //back up
-    moveBackward(25, backDis, 10);
+    moveBackward(25, backDis/2, 10);
+    turnRight(50, 5, 3.0);
+    //back up
+    moveBackward(25, backDis/2, 10);
+    }
+    else{
+        moveBackward(25, backDis, 10);
+    }
 
     //turn right to the light
-    turnRight(50, 125, 3);
+    turnRight(50, 125, 3.0);
 
     //forward to read light
     //moveForward(25, 15, 5);
@@ -340,12 +354,12 @@ void initializeRobot() {
     if(red)
     {
         //go to red
-        moveForward(25, 6, 4.);
+        moveForward(25, 5.9, 4.);
     }
     else
     {
         //go to blue
-        moveForward(25, 1.9, 4.0);
+        moveForward(25, 2.0, 4.0);
         
     }
 
@@ -376,22 +390,22 @@ void initializeRobot() {
     }
     else {
         //press white button
-        moveBackward(25, 3.9, 2.0);
+        moveBackward(25, 3.8, 2.0);
     }
 
     //press white button
-    armServo.SetDegree(125);
+    armServo.SetDegree(135);
     Sleep(.5);
     armServo.SetDegree(30);
 
     //move out
     moveBackward(30, 15.9, 5);
     if(red) {
-        moveBackward(25, 1.1, 5);
+        moveBackward(25, 1.4, 5);
     }
 
     //right 90
-    turnRight(50, 220, 3);
+    turnRight(50, 223, 3);
 
     //move until bump switch pressed
     forwardUntilSwitchPressed(35);
@@ -402,7 +416,7 @@ void initializeRobot() {
  void taskPassport()
  {
     //move back to align with passport
-    moveBackward(25, 1.95, 10);
+    moveBackward(25, 2, 10);
 
     //turn to face passport
     turnLeft(50, 217, 5);
@@ -440,11 +454,11 @@ void initializeRobot() {
     //move forward to rotate lever down
     moveForward(30, 2, 5);
 
-    armServo.SetDegree(90);
+    armServo.SetDegree(85);
 
-    moveBackward(30, 1, 4);
+    moveBackward(30, 2, 4);
 
-    Sleep(2.0);
+    //Sleep(2.0);
 
     //end of code to bring arm down
 
@@ -453,13 +467,13 @@ void initializeRobot() {
     armServo.SetDegree(180);
 
     //move backward away from passport
-    moveBackward(25, 7, 5);
+    moveBackward(25, 6, 5);
 
     //move the arm up
     armServo.SetDegree(30);
 
     //turn left to face wall
-    turnRight(50, 215, 3);
+    turnRight(50, 235, 3);
 
     forwardUntilSwitchPressed(35);
 
@@ -580,7 +594,7 @@ void initializeRobot() {
     turnRight(50, 70, 5);
     moveForward(40, 40, 10);
     moveBackward(25, 2, 3.);
-    turnRight(50, 20, 5);
+    turnRight(50, 30, 5);
     moveForward(25, 3, 3.);
     moveBackward(25, 2, 3.);
  }
