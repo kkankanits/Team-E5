@@ -134,7 +134,7 @@ void turnLeft(float percent, int counts, float timeout) //using encoders 50, 105
 bool isRedLight() {
     //blue is less than 2, red is less than 1
     //LCD.Write(cds.Value());
-    if(cds.Value() <= 1.11) {
+    if(cds.Value() <= 1.3) {
         //LCD.Write("Red");
         LCD.Clear(RED);
         LCD.SetFontColor(BLACK);
@@ -170,7 +170,9 @@ void forwardUntilSwitchPressed(int percent)
 
     while(leftBumpSwitch.Value() || rightBumpSwitch.Value())
     {
-        
+        LCD.Clear(BLACK);
+        LCD.Write(Battery.Voltage());
+        Sleep(1.0);
         if(!leftBumpSwitch.Value())
         {
             leftMotor.Stop();
@@ -252,10 +254,10 @@ void initializeRobot() {
     }
     else if(course == 1) {
         //B
-        moveForward(50, 8, 10);
+        moveForward(50, 7, 10);
         // adjust the lean left, turn right slightly
-        turnRight(50, 10, 5);
-        moveForward(50, 14, 10);
+        turnRight(50, 15, 5);
+        moveForward(50, 15, 10);
     }
     else if(course == 2) {
         moveForward(50, 10, 10);
@@ -354,7 +356,7 @@ void initializeRobot() {
     if(red)
     {
         //go to red
-        moveForward(25, 5.9, 4.);
+        moveForward(25, 6, 4.);
     }
     else
     {
@@ -416,7 +418,7 @@ void initializeRobot() {
  void taskPassport()
  {
     //move back to align with passport
-    moveBackward(25, 2, 10);
+    moveBackward(25, 1.95, 10);
 
     //turn to face passport
     turnLeft(50, 217, 5);
@@ -614,10 +616,16 @@ int main(void)
 {
     // test comment
     LCD.Clear(BLACK);
+    LCD.Write(Battery.Voltage());
 
-    //armServo.TouchCalibrate();
+    turnRight(50, 120, 2);
 
-    finalRun();
+    // while(true) {
+    //     forwardUntilSwitchPressed(50);
+
+    // }
+
+    //finalRun();
 
     //turnRight(50, 235, 5);
     //turnLeft(50, 230, 5);
